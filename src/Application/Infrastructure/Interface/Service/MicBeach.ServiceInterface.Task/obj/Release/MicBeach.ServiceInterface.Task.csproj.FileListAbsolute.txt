@@ -1,0 +1,13 @@
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Interface\Service\MicBeach.ServiceInterface.Task\bin\Release\MicBeach.ServiceInterface.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Interface\Service\MicBeach.ServiceInterface.Task\bin\Release\MicBeach.ServiceInterface.Task.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Interface\Service\MicBeach.ServiceInterface.Task\bin\Release\MicBeach.CTask.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Interface\Service\MicBeach.ServiceInterface.Task\bin\Release\MicBeach.Develop.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Interface\Service\MicBeach.ServiceInterface.Task\bin\Release\MicBeach.DTO.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Interface\Service\MicBeach.ServiceInterface.Task\bin\Release\MicBeach.Util.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Interface\Service\MicBeach.ServiceInterface.Task\bin\Release\MicBeach.Develop.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Interface\Service\MicBeach.ServiceInterface.Task\bin\Release\MicBeach.DTO.Task.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Interface\Service\MicBeach.ServiceInterface.Task\obj\Release\MicBeach.ServiceInterface.Task.csprojResolveAssemblyReference.cache
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Interface\Service\MicBeach.ServiceInterface.Task\obj\Release\MicBeach.ServiceInterface.Task.csproj.CoreCompileInputs.cache
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Interface\Service\MicBeach.ServiceInterface.Task\obj\Release\MicBeach.ServiceInterface.Task.csproj.CopyComplete
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Interface\Service\MicBeach.ServiceInterface.Task\obj\Release\MicBeach.ServiceInterface.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Interface\Service\MicBeach.ServiceInterface.Task\obj\Release\MicBeach.ServiceInterface.Task.pdb

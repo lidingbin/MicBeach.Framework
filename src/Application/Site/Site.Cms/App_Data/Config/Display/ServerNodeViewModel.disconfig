@@ -1,0 +1,57 @@
+﻿{
+    "types": [
+        {
+            "typeName": "MicBeach.ViewModel.Task.ServerNodeViewModel,MicBeach.ViewModel.Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "displays": [
+                {
+                    "name": "Description",
+                    "display": {
+                        "displayTxt": "说明"
+                    }
+                },
+                {
+                    "name": "Host",
+                    "display": {
+                        "displayTxt": "主机地址"
+                    }
+                },
+                {
+                    "name": "Id",
+                    "display": {
+                        "displayTxt": "编号"
+                    }
+                },
+                {
+                    "name": "InstanceName",
+                    "display": {
+                        "displayTxt": "实例名称"
+                    }
+                },
+                {
+                    "name": "Name",
+                    "display": {
+                        "displayTxt": "名称"
+                    }
+                },
+                {
+                    "name": "State",
+                    "display": {
+                        "displayTxt": "状态"
+                    }
+                },
+                {
+                    "name": "ThreadCount",
+                    "display": {
+                        "displayTxt": "线程数量"
+                    }
+                },
+                {
+                    "name": "ThreadPriority",
+                    "display": {
+                        "displayTxt": "线程优先级"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+﻿{
+  "types": [
+    {
+      "typeName": "MicBeach.ViewModel.Cache.ServerViewModel,MicBeach.ViewModel.Cache, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "displays": [
+        {
+          "name": "Host",
+          "display": {
+            "displayTxt": "地址"
+          }
+        },
+        {
+          "name": "Name",
+          "display": {
+            "displayTxt": "名称"
+          }
+        },
+        {
+          "name": "Type",
+          "display": {
+            "displayTxt": "类型"
+          }
+        },
+        {
+          "name": "Password",
+          "display": {
+            "displayTxt": "连接密码"
+          }
+        },
+        {
+          "name": "Remark",
+          "display": {
+            "displayTxt": "说明"
+          }
+        },
+        {
+          "name": "UserName",
+          "display": {
+            "displayTxt": "用户名"
+          }
+        }
+      ]
+    }
+  ]
+}

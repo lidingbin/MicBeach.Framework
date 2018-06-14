@@ -1,0 +1,69 @@
+﻿{
+  "types": [
+    {
+      "typeName": "MicBeach.ViewModel.Task.JobViewModel,MicBeach.ViewModel.Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "displays": [
+        {
+          "name": "Description",
+          "display": {
+            "displayTxt": "说明"
+          }
+        },
+        {
+          "name": "Group",
+          "display": {
+            "displayTxt": "分组"
+          }
+        },
+        {
+          "name": "Id",
+          "display": {
+            "displayTxt": "编号"
+          }
+        },
+        {
+          "name": "JobFileName",
+          "display": {
+            "displayTxt": "文件名"
+          }
+        },
+        {
+          "name": "JobPath",
+          "display": {
+            "displayTxt": "任务地址"
+          }
+        },
+        {
+          "name": "Name",
+          "display": {
+            "displayTxt": "名称"
+          }
+        },
+        {
+          "name": "State",
+          "display": {
+            "displayTxt": "状态"
+          }
+        },
+        {
+          "name": "Type",
+          "display": {
+            "displayTxt": "任务类型"
+          }
+        },
+        {
+          "name": "RunType",
+          "display": {
+            "displayTxt": "运行方式"
+          }
+        },
+        {
+          "name": "UpdateDate",
+          "display": {
+            "displayTxt": "更新时间"
+          }
+        }
+      ]
+    }
+  ]
+}

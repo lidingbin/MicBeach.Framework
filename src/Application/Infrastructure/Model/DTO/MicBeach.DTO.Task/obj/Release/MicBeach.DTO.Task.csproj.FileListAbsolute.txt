@@ -1,0 +1,9 @@
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\DTO\MicBeach.DTO.Task\bin\Release\MicBeach.DTO.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\DTO\MicBeach.DTO.Task\bin\Release\MicBeach.DTO.Task.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\DTO\MicBeach.DTO.Task\bin\Release\MicBeach.CTask.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\DTO\MicBeach.DTO.Task\bin\Release\MicBeach.Util.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\DTO\MicBeach.DTO.Task\obj\Release\MicBeach.DTO.Task.csprojResolveAssemblyReference.cache
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\DTO\MicBeach.DTO.Task\obj\Release\MicBeach.DTO.Task.csproj.CoreCompileInputs.cache
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\DTO\MicBeach.DTO.Task\obj\Release\MicBeach.DTO.Task.csproj.CopyComplete
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\DTO\MicBeach.DTO.Task\obj\Release\MicBeach.DTO.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\DTO\MicBeach.DTO.Task\obj\Release\MicBeach.DTO.Task.pdb

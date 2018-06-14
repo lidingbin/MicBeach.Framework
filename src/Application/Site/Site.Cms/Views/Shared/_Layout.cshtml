@@ -1,0 +1,14 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 系统管理</title>
+    @Styles.Render("~/style/table","~/style/bootstrap", "~/style/jqui", "~/style/common", "~/style/main")
+</head>
+<body>
+    @RenderBody()
+    @Scripts.Render("~/scripts/jquery", "~/scripts/bootstrap", "~/scripts/jqueryui", "~/scripts/table", "~/scripts/jqueryval", "~/scripts/dialog", "~/scripts/slimscroll", "~/scripts/tool", "~/scripts/uimain")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,238 @@
+﻿@{
+    ViewBag.Title = "编辑工作任务";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using MicBeach.Web.Mvc
+@using MicBeach.Util.Extension
+@using MicBeach.ViewModel.Task
+@using MicBeach.CTask
+@model JobViewModel
+@{
+    bool isAdd = Model.Id.IsNullOrEmpty();
+}
+<div id="pc-body">
+    <div id="pc-body-inner">
+        <div class="form-con" id="home">
+            @using (Ajax.BeginForm("EditJob", "Task", new AjaxOptions() { HttpMethod = "Post", OnSuccess = "SuccessCallback", OnFailure = "FailedCallback" }, new { id = "formvalide" }))
+            {
+                @Html.Hidden("Id", null, new { id = "Id" })
+                @Html.HiddenFor(c => c.Group.Code)
+                <table cellpadding="0" cellspacing="0" class="form_table">
+                    <tr>
+                        <td class="txt-right tit">* @Html.LabelFor(c => c.Group)</td>
+                        <td>
+                            <span id="group_name">@(Model.Group?.Name)</span>
+                            <button type="button" class="btn btn-xs btn-success" id="btn_selectgroup"><i class="glyphicon glyphicon-check"></i> 选择</button>
+                            @Html.DefaultValidationMessageFor(a => a.Group, "", new { @class = "tip prompt", id = "group_tipmsg_lab" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="txt-right tit">* @Html.LabelFor(c => c.Name)</td>
+                        <td>
+                            @Html.TextBoxFor(a => a.Name, new { @class = "form-control w-200" })
+                            @Html.DefaultValidationMessageFor(a => a.Name, "", new { @class = "tip prompt" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="txt-right tit">* @Html.LabelFor(c => c.Type)</td>
+                        <td>
+                            @if (isAdd)
+                            {
+                                @Html.EnumToSelect(a => a.Type, JobApplicationType.自定义任务, new { @class = "form-control w-200" }, "", "选择任务类型", ((int)Model.Type).ToString())
+                                @Html.DefaultValidationMessageFor(a => a.Type, "", new { @class = "tip prompt" })
+                            }
+                            else
+                            {
+                                <span>【@Model.Type】</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="txt-right tit">* @Html.LabelFor(c => c.RunType)</td>
+                        <td>
+                            @if (isAdd)
+                            {
+                                @Html.EnumToSelect(a => a.RunType, JobRunType.调度运行, new { @class = "form-control w-200" }, "", "选择执行方式", ((int)Model.RunType).ToString())
+                                @Html.DefaultValidationMessageFor(a => a.RunType, "", new { @class = "tip prompt" })
+                            }
+                            else
+                            {
+                                <span>【@Model.RunType】</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="txt-right tit">* @Html.LabelFor(c => c.State)</td>
+                        <td>
+                            @Html.EnumToSelect(a => a.State, JobState.停止, new { @class = "form-control w-200" }, "", "选择任务状态", ((int)Model.State).ToString())
+                            @Html.DefaultValidationMessageFor(a => a.State, "", new { @class = "tip prompt" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="txt-right tit">* @Html.LabelFor(c => c.JobPath)</td>
+                        <td>
+                            @Html.TextBoxFor(a => a.JobPath, new { @class = "form-control w-400" })
+                            @Html.DefaultValidationMessageFor(a => a.JobPath, "", new { @class = "tip prompt" })
+                            <div style="color:#999;" class="pdt-3">远程任务为任务执行应用的远程地址,应用程序任务为服务节点上程序的完整路径,自定义任务为任务的完整类型限定名</div>
+                        </td>
+                    </tr>
+                    <tr id="tr_customerfile" class="@((!isAdd&&Model.Type==JobApplicationType.自定义任务)?"":"hide")">
+                        <td class="txt-right tit">* @Html.LabelFor(c => c.JobFileName)</td>
+                        <td>
+                            @Html.TextBoxFor(a => a.JobFileName, new { @class = "form-control w-400" })
+                            @Html.DefaultValidationMessageFor(a => a.JobFileName, "", new { @class = "tip prompt" })
+                            <div style="color:#999;" class="pdt-3">自定义任务的主程序集文件相对路径(文件夹/xxxjob.dll)</div>
+                        </td>
+                    </tr>
+                    <tr id="tr_file" class="@((!isAdd&&Model.Type!=JobApplicationType.远程任务)?"":"hide")">
+                        <td class="txt-right tit">任务文件</td>
+                        <td>
+                            <div><input type="button" class="btn btn-blue" id="btn_viewjobfile" value="选择任务文件..." /></div>
+                            <div>
+                                <table class="wp-50">
+                                    <thead>
+                                        <tr><th>文件</th><th width="150" class="t_c">更新时间</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (!isAdd)
+                                        {
+                                            switch (Model.Type)
+                                            {
+                                                case JobApplicationType.本地应用:
+                                                case JobApplicationType.自定义任务:
+                                                    <tr>
+                                                        <td>thi2212312312.zip</td>
+                                                        <td class="t_c">2017-12-1 12:20</td>
+                                                    </tr>
+                                                    break;
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="txt-right tit">* @Html.LabelFor(c => c.Description)</td>
+                        <td>
+                            @Html.TextAreaFor(a => a.Description, new { @class = "form-control w-200 h-100"})
+                            @Html.DefaultValidationMessageFor(a => a.Description, "", new { @class = "tip prompt" })
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+<div id="pc-foot">
+    <div class="txt-right form-submitbtn-con pdr-10"><button type="button" onclick="SubmitForm()" class="btn btn-blue">提交</button></div>
+</div>
+@section Scripts{
+    @Scripts.Render("~/scripts/upload")
+    <script type="text/javascript">
+        HasDivPageCon = true;
+        var isAdd = '@isAdd.ToString().ToLower()' == 'true';
+        var jobDetailUrl = '@Url.Action("JobDetail", "Task",new { id="_id"})';
+        $(function () {
+            $("#btn_selectgroup").click(function () {
+                SelectGroup();
+            });
+
+            //任务类型
+            $("#Type").change(function () {
+                var val = $(this).val();
+                switch (val) {
+                    case '@((int)JobApplicationType.本地应用)':
+                        $("#tr_file").removeClass('hide');
+                        break;
+                    case '@((int)JobApplicationType.自定义任务)':
+                        $("#tr_customerfile").removeClass('hide');
+                        break;
+                    default:
+                        $("#tr_file").addClass('hide');
+                        $("#tr_customerfile").addClass('hide');
+                        break;
+                }
+            });
+
+            var uploader = WebUploader.create({
+                swf: '/Content/scripts/editor/third-party/webuploader/Uploader.swf',
+                server: '@Url.Action("UploadJobFile", "Upload")',
+                pick: {
+                    id: '#btn_viewjobfile',
+                    multiple: false
+                },
+                fileVal: "job_file",
+                auto: true
+            });
+            uploader.on('uploadSuccess', function (file, res) {
+                if (!res.Success) {
+                    ErrorMsg("文件上传失败");
+                    return;
+                }
+                var newEle = $('<div class="attfile_item"><a class="filename" href="' + fileFullPath.replace("_fileurl", res.Data.FullPath) + '" target="_blank">' + res.Data.FileName + '</a><span class="delatt_btn"><i class="glyphicon glyphicon-remove"></i></span></div>');
+                newEle.data("FilePath", res.Data.FullPath);
+                $("#attfile_con").append(newEle);
+            });
+        });
+
+        //提交表单
+        function SubmitForm() {
+            if (!VerifyGroup()) {
+                return;
+            }
+            $("#formvalide").submit();
+        }
+
+        //成功回调
+        function SuccessCallback(res) {
+            if (!res) {
+                return;
+            }
+            ResultMsg(res);
+            if (res.Success) {
+                window.top.RedirectCurrentPage(jobDetailUrl.replace('_id', res.Data.Id), '任务详情');
+            }
+        }
+
+        //失败回调
+        function FailedCallback(res) {
+            ErrorMsg('提交失败');
+        }
+
+        //选择分组
+        function SelectGroup() {
+            DialogPage({
+                url: '@Url.Action("JobGroupSingleSelect", "Task")',
+                width: "300px",
+                height: "400px",
+                title: '选择任务分组',
+                ok: false,
+                cancel: null
+            });
+        }
+
+        //分组选择回调
+        function JobGroupSingleSelectCallback(group, groupNames) {
+            if (!group) {
+                return;
+            }
+            $("#Group_Code").val(group.Code);
+            $("#group_name").html(groupNames);
+            VerifyGroup();
+        }
+
+        function VerifyGroup() {
+            var groupCode = $.trim($("#Group_Code").val());
+            if (groupCode == "") {
+                $("#group_tipmsg_lab").removeClass("prompt").addClass("error").html("请选择任务分组");
+                return false;
+            }
+            else {
+                $("#group_tipmsg_lab").removeClass("error").addClass("success").html("");
+                return true;
+            }
+        }
+
+    </script>
+}

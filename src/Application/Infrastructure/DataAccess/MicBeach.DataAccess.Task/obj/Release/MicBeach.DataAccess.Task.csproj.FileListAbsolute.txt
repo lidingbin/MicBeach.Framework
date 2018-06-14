@@ -1,0 +1,15 @@
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\bin\Release\MicBeach.DataAccess.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\bin\Release\MicBeach.DataAccess.Task.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\bin\Release\MicBeach.DataAccessInterface.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\bin\Release\MicBeach.Develop.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\bin\Release\MicBeach.Entity.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\bin\Release\MicBeach.Util.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\bin\Release\MicBeach.Develop.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\bin\Release\MicBeach.Util.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\bin\Release\MicBeach.DataAccessInterface.Task.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\bin\Release\MicBeach.Entity.Task.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\obj\Release\MicBeach.DataAccess.Task.csprojResolveAssemblyReference.cache
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\obj\Release\MicBeach.DataAccess.Task.csproj.CoreCompileInputs.cache
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\obj\Release\MicBeach.DataAccess.Task.csproj.CopyComplete
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\obj\Release\MicBeach.DataAccess.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\DataAccess\MicBeach.DataAccess.Task\obj\Release\MicBeach.DataAccess.Task.pdb

@@ -1,0 +1,252 @@
+﻿@{
+    ViewBag.Title = "服务调度计划";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using MicBeach.Util.Extension
+@using MicBeach.Util.Serialize
+@using MicBeach.CTask
+@{ 
+    var triggerTypeValues = TaskTriggerType.简单.GetType().GetEnumValueAndNames();
+    var triggerStatusValues = TaskTriggerState.停止.GetType().GetEnumValueAndNames();
+    var triggerApplyValues = TaskTriggerApplyTo.服务.GetType().GetEnumValueAndNames();
+    var triggerServerRunStatusValues = TaskTriggerServerRunState.停止.GetType().GetEnumValueAndNames();
+}
+<div id="pc-head">
+    <div class="panel panel-default mg-0 bd-rad-0 bd-bw-0">
+        <div class="panel-body pd-10">
+            <div class="lis_lefttool">
+                <button class="btn btn-xs btn-blue" id="btn_addtrigger"><i class="glyphicon glyphicon-plus"></i> 添加调度</button>
+            </div>
+            <div class="lis_search">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pc-body">
+    <div id="pc-body-inner">
+        <table class="table table-striped table-bordered nowrap wp-100 bd-lw-0" id="trigger_table" cellpadding="0" cellspacing="0">
+        </table>
+    </div>
+</div>
+
+<div id="pc-foot">
+    <div class="txt-right form-submitbtn-con pdr-10"><button type="button" onclick="CloseWindow()" class="btn btn-blue"><i class="glyphicon glyphicon-off"></i> 关闭</button></div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        BodyScroll = false;
+        IsDialogPage = true;
+        var triggerStateDic=new Object();
+        var triggerApplyDic=new Object();
+        var triggerServerRunStateDic=new Object();
+        var triggerTypeDic=new Object();
+        $(function () {
+            triggerStateDic=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(triggerStatusValues))');
+            triggerApplyDic=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(triggerApplyValues))');
+            triggerServerRunStateDic=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(triggerServerRunStatusValues))');
+            triggerTypeDic=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(triggerTypeValues))');
+            InitDataTable({
+                TableEle:'#trigger_table',
+                "columnDefs": [
+				        { "title": '<input type="checkbox" class="cbx_all"/>', "targets": 0,"data":function ( row, type, val, meta ) {
+				            return '<input type="checkbox" class="cbx_val" value="'+row.Trigger.Id+'"/>';
+				        },width:'20px',className:'txt-center' },
+    					{ "title": "名称", "targets": 1,"data":'Trigger.Name'},
+    					{ "title": "执行策略", "targets": 2,"data":function ( row, type, val, meta ){
+    					    return triggerTypeDic[row.Trigger.Type];
+    					},width:'80px',className:'txt-center' },
+    					{ "title": "应用对象", "targets": 3,"data":function ( row, type, val, meta ){
+    					    return triggerApplyDic[row.Trigger.ApplyTo];
+    					},width:'80px',className:'txt-center' },
+                        { "title": "计划状态", "targets": 4,"data":function ( row, type, val, meta ){
+                            return triggerStateDic[row.Trigger.State];
+                        },width:'80px',className:'txt-center' },
+                        { "title": "调度状态", "targets": 5,"data":function ( row, type, val, meta ){
+                            return row.Trigger.ApplyTo==@((int)TaskTriggerApplyTo.所有)?'@TaskTriggerServerRunState.运行':triggerServerRunStateDic[row.RunState];
+                        },width:'80px',className:'txt-center' },
+    					{ "title": "操作", "targets": 6,"data":function(row,type,val,meta){
+    					    var menuItems=new Array();
+    					    menuItems.push('<li><a href="javascript:void(0)" class="btn_triggerdetail" triggerno="_triggerNo" triggername="_triggerName"><i class="glyphicon glyphicon-list-alt"></i> 详情</a></li>'.replace('_triggerNo',row.Trigger.Id).replace('_triggerName',row.Trigger.Name));
+    					    if(row.Trigger.ApplyTo==@((int)TaskTriggerApplyTo.服务))
+    					    {
+                                if(row.RunState==@((int)TaskTriggerServerRunState.运行))
+    					    {
+    					        menuItems.push('<li><a href="javascript:void(0)" class="btn_triggerdisable" triggerno="_triggerNo" triggername="_triggerName"><i class="glyphicon glyphicon-eye-close"></i> 停用</a></li>'.replace('_triggerNo',row.Trigger.Id).replace('_triggerName',row.Trigger.Name));
+    					    }else
+    					    {
+    					        menuItems.push('<li><a href="javascript:void(0)" class="btn_triggerenable" triggerno="_triggerNo" triggername="_triggerName"><i class="glyphicon glyphicon-eye-open"></i> 启用</a></li>'.replace('_triggerNo',row.Trigger.Id).replace('_triggerName',row.Trigger.Name));
+    					    }
+                              menuItems.push('<li><a href="javascript:void(0)" class="btn_triggerdelete" triggerno="_triggerNo" triggername="_triggerName"><i class="glyphicon glyphicon-trash"></i> 移除</a></li>'.replace('_triggerNo',row.Trigger.Id).replace('_triggerName',row.Trigger.Name));
+    					    }
+    					    return '<div class="btn-group"><button type="button" class="btn btn-blue dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">管理 <span class="caret"></span></button><ul class="dropdown-menu list-dropdown-menu" style="width:62px">'+menuItems.join('')+'</ul></div>';
+    					},width:'62px',className:'txt-center' },
+                ]
+        });
+    					LoadTriggers();
+            //计划详情
+            $("body").on('click', '.btn_triggerdetail', function () {
+                var triggerId = $.trim($(this).attr("triggerno"));
+                if (triggerId == '') {
+                    return;
+                }
+                window.top.OpenNewTabPage('@Url.Action("TriggerDetail", "Task",new {id="_id"})'.replace('_id', triggerId), '执行计划详情');
+            });
+            //停用计划
+            $("body").on("click", ".btn_triggerdisable", function () {
+                var triggerNo = $.trim($(this).attr("triggerno"));
+                if (triggerNo == "") {
+                    return;
+                }
+                var triggerName = $.trim($(this).attr("triggername"));
+                ModifyTriggerRunState(triggerNo,triggerName,@((int)TaskTriggerServerRunState.停止));
+            });
+            //启用计划
+            $("body").on("click", ".btn_triggerenable", function () {
+                var triggerNo = $.trim($(this).attr("triggerno"));
+                if (triggerNo == "") {
+                    return;
+                }
+                var triggerName = $.trim($(this).attr("triggername"));
+                ModifyTriggerRunState(triggerNo,triggerName,@((int)TaskTriggerServerRunState.运行));
+            });
+            //移除计划
+            $("body").on("click",".btn_triggerdelete",function(){
+                var triggerNo = $.trim($(this).attr("triggerno"));
+                if (triggerNo == "") {
+                    return;
+                }
+                var triggerName = $.trim($(this).attr("triggerName"));
+                RemoveServerTrigger([triggerNo],triggerName);
+            });
+            //移除选中计划
+            $("#deleteselect_btn").click(function(){
+                var triggerNos=GetSelectTriggers();
+                RemoveServerTrigger(triggerNos,'');
+            });
+            //添加计划
+            $("#btn_addtrigger").click(function(){
+                DialogPage({
+                    url: '@Html.Raw(Url.Action("TriggerMultipleSelect", "Task",new { Job = "_jid", ApplyTo=((int)TaskTriggerApplyTo.服务)}))'.replace('_jid','@ViewBag.JobId'),
+                    width: "600px",
+                    height: "400px",
+                    title: '选择任务计划',
+                    ok: false,
+                    cancel: null
+                });
+            });
+        });
+
+        //选择计划回调
+        function TriggerMultipleSelectCallback(triggers){
+            if(!triggers){
+                return;
+            }
+            var triggerServers = new Array();
+            for (var s in triggers) {
+                var nowTrigger = triggers[s];
+                triggerServers.push({
+                    Server: {
+                        Id: '@ViewBag.ServerCode'
+                    },
+                    Trigger: {
+                        Id: nowTrigger.Id
+                    },
+                    RunState:'@((int)TaskTriggerServerRunState.运行)'
+                });
+            }
+            $.post('@Url.Action("SaveTriggerServer","Task")', { triggerServers: triggerServers }, function (res) {
+                ResultMsg(res);
+                if (res.Success) {
+                    LoadTriggers();
+                }
+            });
+        }
+
+        //获取选中的计划
+        function GetSelectTriggers() {
+            var checkedValues = new Array();
+            $("#tabe_page_list .table_cbox").each(function (i, e) {
+                if (e.checked) {
+                    var nowValue = $.trim($(e).val());
+                    if (nowValue != "") {
+                        checkedValues.push(nowValue);
+                    }
+                }
+            });
+            return checkedValues;
+        }
+
+        //修改调度计划运行状态
+        function ModifyTriggerRunState(triggerId, triggerName, state) {
+            if (!triggerId || triggerId == "") {
+                return;
+            }
+            var enableState=state==@((int)TaskTriggerServerRunState.运行);
+            var tipMsg = enableState?'启用后执行计划将会在该服务上调度执行,确认启用计划【'+triggerName+'】吗?':'停用后执行计划将会在该服务上停止执行,确认停用计划【'+triggerName+'】吗?';
+            var triggerServers=new Array();
+            triggerServers.push({
+                Server:{
+                    Id:'@ViewBag.ServerCode'
+                },
+                Trigger:{
+                    Id:triggerId
+                },
+                RunState:state
+            });
+            ConfirmMsg(tipMsg, function () {
+                $.post('@Url.Action("ModifyTriggerServerState", "Task")', { triggerServers: triggerServers }, function (res) {
+                    ResultMsg(res);
+                    if (res.Success) {
+                        LoadTriggers();
+                    }
+                });
+            });
+        }
+
+        //加载计划
+        function LoadTriggers(){
+            $.post('@Url.Action("SearchServerScheduleTrigger", "Task")', { jobId: '@ViewBag.JobId', serverCode: '@ViewBag.ServerCode' }, function (res) {
+                var jsonData = JSON.parse(res.Datas);
+                ReplaceDataTableData("#trigger_table",jsonData);
+                $(window).resize();
+                InitDataTableChecked("#trigger_table");
+            });
+        }
+
+        //移除计划
+        function RemoveServerTrigger(triggerIdArray,triggerName){
+            if(!triggerIdArray||triggerIdArray.length<=0){
+                return;
+            }
+            var triggerServers=new Array();
+            for(var s in triggerIdArray)
+            {
+                triggerServers.push({
+                    Server:{
+                        Id:'@ViewBag.ServerCode'
+                    },
+                    Trigger:{
+                        Id:triggerIdArray[s]
+                    }
+                });
+            }
+            var tipMsg=triggerIdArray.length==1&&triggerName!=""?'移除计划后将停止计划在该服务上的调度执行,确认移除计划【'+triggerName+'】吗?':"移除计划后将停止计划在该服务上的调度执行,确认移除吗?";
+            ConfirmMsg(tipMsg, function () {
+                $.post('@Url.Action("DeleteTriggerServers", "Task")', { triggerServers: triggerServers }, function (res) {
+                    ResultMsg(res);
+                    if (res.Success) {
+                        LoadTriggers();
+                    }
+                });
+            });
+        }
+
+        //关闭
+        function CloseWindow() {
+            art.dialog.close(true);
+        }
+    </script>
+}

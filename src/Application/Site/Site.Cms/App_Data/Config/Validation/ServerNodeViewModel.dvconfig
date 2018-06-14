@@ -1,0 +1,84 @@
+﻿{
+    "rules": [
+        {
+            "typeName": "MicBeach.ViewModel.Task.ServerNodeViewModel,MicBeach.ViewModel.Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "rules": [
+                {
+                    "name": "Description",
+                    "rules": [
+                        {
+                            "maxValue": "50",
+                            "minValue": "0",
+                            "vtype": "StringLength",
+                            "errorMsg": "请填写50个字符内的说明信息",
+                            "tipMsg": true
+                        }
+                    ]
+                },
+                {
+                    "name": "Host",
+                    "rules": [
+                        {
+                            "vtype": "Required",
+                            "errorMsg": "请填写50个字符内的主机地址",
+                            "tipMsg": true
+                        },
+                        {
+                            "maxValue": "50",
+                            "minValue": "1",
+                            "vtype": "StringLength",
+                            "errorMsg": "请填写50个字符内的主机地址",
+                            "tipMsg": false
+                        }
+                    ]
+                },
+                {
+                    "name": "Name",
+                    "rules": [
+                        {
+                            "vtype": "Required",
+                            "errorMsg": "请填写20个字符内的名称",
+                            "tipMsg": true
+                        },
+                        {
+                            "maxValue": "20",
+                            "minValue": "1",
+                            "vtype": "StringLength",
+                            "errorMsg": "请填写20个字符内的名称",
+                            "tipMsg": false
+                        }
+                    ]
+                },
+                {
+                    "name": "State",
+                    "rules": [
+                        {
+                            "vtype": "Required",
+                            "errorMsg": "请选择状态",
+                            "tipMsg": true
+                        }
+                    ]
+                },
+                {
+                    "name": "ThreadCount",
+                    "rules": [
+                        {
+                            "vtype": "Required",
+                            "errorMsg": "请填写运行线程数量",
+                            "tipMsg": true
+                        }
+                        //{
+                        //    "maxValue": "100",
+                        //    "minValue": "1",
+                        //    "lowerBoundary": 0,
+                        //    "upperBoundary": 0,
+                        //    "vtype": "Range",
+                        //    "errorMsg": "请填写1-100以内的线程数量",
+                        //    "tipMsg": false
+                        //}
+                    ]
+                }
+            ]
+        }
+    ]
+}

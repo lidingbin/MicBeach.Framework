@@ -1,0 +1,591 @@
+﻿@{
+    ViewBag.Title = "工作分组管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/style/ztree")
+@using MicBeach.Util.Extension;
+@using MicBeach.Util.Serialize;
+@using MicBeach.CTask;
+@{
+    string allJobGroup = ViewBag.AllJobGroup;
+    if (allJobGroup.IsNullOrEmpty())
+    {
+        allJobGroup = "[]";
+    }
+    string nodeString = ViewBag.AllNodes;
+    if (nodeString.IsNullOrEmpty())
+    {
+        nodeString = "[]";
+    }
+    string selectNodeString = ViewBag.SelectNodes;
+    if (selectNodeString.IsNullOrEmpty())
+    {
+        selectNodeString = "[]";
+    }
+    var jobTypeValues = JobApplicationType.本地应用.GetType().GetEnumValueAndNames();
+    var jobStateValues = JobState.停止.GetType().GetEnumValueAndNames();
+}
+@model MicBeach.ViewModel.Task.JobGroupViewModel
+<div id="pc-body">
+    <div id="pc-body-inner">
+        <div class="w-250 hp-100 fl">
+            <div class="treelistgroup c_pagecon bd-rad-0">
+                <div class="c_head">
+                    <div class="tlg_btncon bg-f5 bd-t-ddd bd-tw-1 bd-t-solid">
+                        <button type="button" class="btn btn-xs btn-blue" id="btn_addlevelone"><i class="glyphicon glyphicon-plus"></i> 添加分组</button>
+                        <button type="button" class="btn btn-xs btn-danger" id="btn_deleteselect"><i class="glyphicon glyphicon-trash"></i> 删除选中</button>
+                    </div>
+                </div>
+                <div class="c_body tlg_treecon">
+                    <div class="c_bodyinner">
+                        <ul id="JobGroup_tree" class="ztree"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hp-100 c_pagecon">
+            <div class="form-ingroup c_head" id="jobgroup_form_con">
+                <div class="fig-body form-con">
+                    @using (Ajax.BeginForm("EditJobGroup", "Blog", new AjaxOptions() { HttpMethod = "Post", OnSuccess = "EditSuccess" }, new { id = "JobGroupform" }))
+                    {
+                        @Html.HiddenFor(c => c.Code)
+                        @Html.HiddenFor(c => c.Parent.Code)
+                        <table cellpadding="0" cellspacing="0" class="form_table">
+                            <tr>
+                                <td class="txt-right tit">@Html.LabelFor(c => c.Parent)</td>
+                                <td>
+                                    <input type="text" id="ParentName" class="form-control w-200" style="background:#fff" readonly="readonly" value="一级分组" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="txt-right tit">* @Html.LabelFor(c => c.Name)</td>
+                                <td>
+                                    @Html.TextBoxFor(a => a.Name, new { @class = "form-control w-200" })
+                                    @Html.DefaultValidationMessageFor(a => a.Name, "", new { @class = "tip prompt" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><button class="btn btn-blue" type="button" onclick="SubmitForm()"><i class="glyphicon glyphicon-floppy-save"></i> 提交</button></td>
+                            </tr>
+                        </table>
+                    }
+                </div>
+            </div>
+            <div class="c_body">
+                <div class="form_tabgroup hide c_pagecon" id="detail_tabform">
+                    <ul class="nav nav-tabs c_head" role="tablist" style="" id="order_tabnav">
+                        <li role="presentation" class="active">
+                            <a href="#s_nosubmit" role="tab" data-toggle="tab" class="bd-lw-0">工作任务</a>
+                        </li>
+                    </ul>
+
+                    <div class="form_tabgconent tab-content dialog b_none c_body" id="auth_tabcontent_con">
+                        <div role="tabpanel" id="s_nosubmit" class="tab-pane active c_pagecon">
+                            <div class="c_head">
+                                <div class="lis_search pd-10" id="job_search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control w-200" id="search_jobname" placeholder="任务名称">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default fc_3" type="button" id="searchbusiness_btn" onclick="LoadJobs()"><i class="glyphicon glyphicon-search"></i></button>
+                                        </span>
+                                    </div>
+                                    <button class="btn btn-success" type="button" id="btn_addjob"><i class="glyphicon glyphicon-plus"></i> 添加</button>
+                                    <button class="btn btn-danger" type="button" id="btn_delselectjob"><i class="glyphicon glyphicon-trash"></i> 删除选中</button>
+                                </div>
+                            </div>
+                            <div class="c_body">
+                                <table class="table table-striped table-bordered nowrap wp-100 bd-lw-0" cellpadding="0" cellspacing="0" id="job_table">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="parentJobGroup_tree_con" class="c_pagecon digs_con b_txt-right_4 w-200 h-300 ps-absolute bd-rad-0 bg-f bd-ddd bd-solid bd-w-1" style="background: #fff;display:none">
+    <div class="c_body">
+        <ul id="parentJobGroup_tree" class="ztree"></ul>
+    </div>
+    <div class="c_foot">
+        <div class="form-submitbtn-con txt-center"><button type="button" id="btn_cachetreeselect" class="btn btn-xs btn-blue fc_3">关闭</button></div>
+    </div>
+</div>
+@section Scripts
+{
+    @Scripts.Render("~/scripts/ztree")
+    <script type="text/javascript">
+        BodyScroll = false
+        HasDivPageCon = true;
+        var isAdd = true;
+        var imgPath = "";
+        var changeSortUrl = '@Url.Action("ChangeJobGroupSortIndex", "Task")';
+        var deleteUrl = '@Url.Action("DeleteJobGroup", "Task")';
+        var loadingIcoUrl = '/Content/Scripts/ztree/img/loading.gif';
+        var editJobGroup = null;
+        var seetings = {
+            view: {
+                nameIsHTML: true,
+                //showIcon:false
+            },
+            callback: {
+                onClick: AllJobGroupNodeClick,
+                beforeDrag: beforeDrag,
+                beforeDrop: beforeDrop,
+                beforeExpand: BeforeExpand,
+            },
+            check: {
+                enable: true,
+                chkboxType: { "Y": "", "N": "" }
+            },
+            edit: {
+                enable: true,
+                showRemoveBtn: false,
+                showRenameBtn: false,
+                drag: {
+                    isMove: true,
+                    inner: false,
+                    prev: true,
+                    next: true
+                }
+            }
+        };
+        var parentTreeSettings =
+            {
+                view: {
+                    nameIsHTML: true,
+                    //showIcon: false
+                },
+                callback: {
+                    onClick: SelectJobGroupNodeClick,
+                    beforeExpand: SelectBeforeExpand
+                }
+            };
+
+        var allNodes = @Html.Raw(nodeString);
+        var selectNodes = @Html.Raw(selectNodeString);
+        var allJobGroups = @Html.Raw(allJobGroup);
+        var selectedNode = null;
+        var jobTypesDic=new Object();
+        var jobStateDic=new Object();
+        $(function () {
+
+            InitAllJobGroupTree();
+            InitSelectJobGroupTree();
+            jobTypesDic=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(jobTypeValues))');
+            jobStateDic=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(jobStateValues))');
+
+            //任务表格
+            InitDataTable({
+                TableEle:'#job_table',
+                "columnDefs": [
+				        { "title": '<input type="checkbox" class="cbx_all"/>', "targets": 0,"data":function ( row, type, val, meta ) {
+				            return '<input type="checkbox" class="cbx_val" value="'+row.Id+'"/>';
+				        },width:'20px',className:'txt-center' },
+    					{ "title": "名称", "targets": 1,"data":'Name'},
+    					{ "title": "类型", "targets": 2,"data":function ( row, type, val, meta ){
+    					    return jobTypesDic[row.Type];
+    					},width:'100px',className:'txt-center' },
+    					{ "title": "状态", "targets": 3,"data":function ( row, type, val, meta ){
+    					    return jobStateDic[row.State];
+    					},width:'100px',className:'txt-center' },
+    					{ "title": "操作", "targets": 4,"data":function(row,type,val,meta){
+    					    var menuItems=new Array();
+    					    menuItems.push('<li><a href="javascript:void(0)" class="btn_jobdetail" sysno="_sysno" jobname="_jobname"><i class="glyphicon glyphicon-list-alt"></i> 详情</a></li>'.replace('_sysno',row.Id).replace('_jobname',row.Name));
+    					    return '<div class="btn-group"><button type="button" class="btn btn-blue dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">管理 <span class="caret"></span></button><ul class="dropdown-menu list-dropdown-menu" style="width:62px">'+menuItems.join('')+'</ul></div>';
+    					},width:'62px',className:'txt-center' },
+                ]
+            });
+
+            //添加一级
+            $("#btn_addlevelone").click(function () {
+                ResetForm();
+                $("#ParentName").val(JoinParentJobGroupNames(null));
+            });
+
+            //上移
+            $("#btn_sortup").click(function () {
+                if (!selectedNode) {
+                    return;
+                }
+                var prevNode = selectedNode.getPreNode();
+                if (!prevNode) {
+                    return;
+                }
+                MoveNode(selectedNode, prevNode, 'prev');
+            });
+            //下移
+            $("#btn_sortdown").click(function () {
+                if (!selectedNode) {
+                    return;
+                }
+                var nextNode = selectedNode.getNextNode();
+                if (!nextNode) {
+                    return;
+                }
+                MoveNode(selectedNode, nextNode, 'next');
+            });
+
+            //删除
+            $("#btn_deleteselect").click(function () {
+                var checkNodes = $.fn.zTree.getZTreeObj("JobGroup_tree").getCheckedNodes(true);
+                var sysNoArray = new Array();
+                for (var i = 0; i < checkNodes.length; i++) {
+                    sysNoArray.push(checkNodes[i].id);
+                }
+                DeleteJobGroup(sysNoArray.join(','));
+            });
+
+            //上级工作分组
+            $("#ParentName").focus(function () {
+                var ele = $(this);
+                var treeCon = $("#parentJobGroup_tree_con");
+                treeCon.css("left", ele.offset().left);
+                treeCon.css("top", ele.offset().top + ele.height() + 2);
+                treeCon.show();
+            });
+            //取消工作分组选择
+            $("#btn_cachetreeselect").click(function () {
+                $("#parentJobGroup_tree_con").hide();
+            });
+
+            //创建工作任务
+            $("#btn_addjob").click(function () {
+                OpenEditJobPage('@Url.Action("EditJob","Task",new { Group="_gpid"})'.replace('_gpid',editJobGroup.Code), '添加工作任务');
+            });
+
+            //删除工作任务
+            $("body").on("click", ".btn_jobdelete", function () {
+                var sysNo = $(this).attr("sysno");
+                DeleteJob([sysNo]);
+            });
+
+            //删除选中任务
+            $("#btn_delselectjob").click(function () {
+                var checkedValues = GetSelectJobs();
+                if (!checkedValues || checkedValues.length <= 0) {
+                    ErrorMsg("还没有选择要删除的信息");
+                    return;
+                }
+                DeleteJob(checkedValues);
+            });
+            //任务详情
+            $("body").on("click", ".btn_jobdetail", function () {
+                var sysNo = $.trim($(this).attr("sysno"));
+                if (sysNo == "") {
+                    return;
+                }
+                var editUrl = '@Url.Action("JobDetail", "Task", new { Id="sys_no"})'.replace('sys_no', sysNo);
+                OpenEditJobPage(editUrl, '任务详情');
+            });
+        });
+
+        //移动节点
+        function MoveNode(treeNode, targetNode, moveType) {
+            if (treeNode.tId == targetNode.tId) {
+                return false;
+            }
+            var sortIndex = 0;
+            if (moveType == "inner") {
+                if (targetNode.tId != treeNode.parentTId) {
+                    return false;
+                }
+                sortIndex = 1;
+            } else {
+                if (treeNode.parentTId != targetNode.parentTId) {
+                    return false;
+                }
+                var targetId = targetNode.id;
+                var targetArea = allJobGroups[targetId];
+                if (!targetArea) {
+                    return false;
+                }
+                sortIndex = moveType == "prev" ? targetArea.SortIndex : targetArea.SortIndex + 1;
+            }
+            var nowId = treeNode.id;
+            $.post(changeSortUrl, { code: nowId, sort: sortIndex }, function (res) {
+                if (res.Success) {
+                    InitData(res);
+                }
+            })
+            $.fn.zTree.getZTreeObj("JobGroup_tree").moveNode(targetNode, treeNode, moveType, true);
+            return false;
+        }
+
+        //拖拽之前事件
+        function beforeDrag(treeId, treeNodes) {
+            for (var i = 0, l = treeNodes.length; i < l; i++) {
+                if (treeNodes[i].drag === false) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        //拖拽事件
+        function beforeDrop(treeId, treeNodes, targetNode, moveType) {
+            if (!treeNodes || !targetNode || treeNodes.length <= 0) {
+                return false;
+            }
+            var firstNode = treeNodes[0];
+            return MoveNode(firstNode, targetNode, moveType);
+        }
+
+        //提交表单
+        function SubmitForm() {
+            $("#JobGroupform").submit();
+        }
+
+        //重置表单
+        function ResetForm() {
+            $("#JobGroupform")[0].reset();
+            $("#parentJobGroup_tree_con").hide();
+            isAdd = true;
+            InitSelectJobGroupTree();
+            $("#Code,#Parent_Code").val('');
+            editJobGroup = null;
+            HideDetailForm();
+        }
+
+        //工作分组选择节点点击
+        function SelectJobGroupNodeClick(event, treeId, treeNode) {
+            var parentNodeNames = JoinParentJobGroupNames(treeNode);
+            $("#ParentName").val(parentNodeNames);
+            $("#Parent_Code").val(treeNode.id);
+            $("#parentJobGroup_tree_con").hide();
+        }
+
+        function JoinParentJobGroupNames(treeNode) {
+            if (!treeNode) {
+                return "一级工作分组";
+            }
+            var parentNodes = new Array();
+            var nowNode = treeNode;
+            var parentNodeNames = '';
+            while (true) {
+                var parentNode = nowNode.getParentNode();
+                if (!parentNode) {
+                    break;
+                }
+                nowNode = parentNode;
+                parentNodeNames = parentNode.name + '->' + parentNodeNames;
+            }
+            parentNodeNames += treeNode.name;
+            return parentNodeNames;
+        };
+
+        //左侧工作分组节点选择
+        function AllJobGroupNodeClick(event, treeId, treeNode) {
+            var nowJobGroup = allJobGroups[treeNode.id];
+            editJobGroup = nowJobGroup;
+            var parentNodeNames = JoinParentJobGroupNames(treeNode.getParentNode());
+            InitEditJobGroup(nowJobGroup, parentNodeNames);
+            selectedNode = treeNode;
+            HideSelectJobGroupNodes(treeNode.level);
+            $.fn.zTree.getZTreeObj("JobGroup_tree").selectNode(treeNode, false);
+        }
+
+        //初始化编辑工作分组
+        function InitEditJobGroup(area, parentNames) {
+            if (!area) {
+                return;
+            }
+            $("#ParentName").val(parentNames);
+            $("#Parent").val(area.Parent);
+            $("#Code").val(area.Code);
+            $("#Name").val(area.Name);
+            isAdd = false;
+            ShowDetailForm();
+        };
+
+        //添加成功
+        function EditSuccess(res) {
+            ResultMsg(res);
+            if (res.Success) {
+                if (isAdd) {
+                    ResetForm();
+                }
+                InitData(res);
+            }
+        }
+
+        //初始化数据
+        function InitData(res) {
+            allNodes = JSON.parse(res.Data.AllNode);
+            if(!allNodes){
+                return;
+            }
+            selectNodes = JSON.parse(res.Data.SelectNode);
+            if(!selectNodes){
+                selectNodes=[];
+            }
+            allJobGroups = JSON.parse(res.Data.AllJobGroup);
+            if(!allJobGroups){
+                return;
+            }
+            InitAllJobGroupTree();
+            InitSelectJobGroupTree();
+        }
+
+        //初始化所有工作分组树控件
+        function InitAllJobGroupTree() {
+            $.fn.zTree.init($("#JobGroup_tree"), seetings, allNodes);
+        }
+
+        //初始化选择工作分组树控件
+        function InitSelectJobGroupTree() {
+            $.fn.zTree.init($("#parentJobGroup_tree"), parentTreeSettings, selectNodes);
+        }
+
+        //隐藏大于等于指定级别的选择工作分组
+        function HideSelectJobGroupNodes(startLevel) {
+            InitSelectJobGroupTree();
+            var treeObj = $.fn.zTree.getZTreeObj("parentJobGroup_tree");
+            var nodes = treeObj.getNodesByFilter(function (node) {
+                return node.level >= startLevel && node.name != '一级工作分组';
+            }, false);
+            treeObj.hideNodes(nodes);
+        }
+
+        function DeleteJobGroup(sysNos) {
+            if ($.trim(sysNos) == "") {
+                ErrorMsg("没有选择要删除的工作分组信息");
+                return;
+            }
+            ConfirmMsg('删除工作分组将同时删除该工作分组下的所有子工作分组,确认删除吗?', function (res) {
+                $.post(deleteUrl, { codes: sysNos }, function (res) {
+                    ResultMsg(res);
+                    if (res.Success) {
+                        InitData(res);
+
+                    }
+                });
+            });
+        }
+
+        //展开加载数据
+        function BeforeExpand(treeId, treeNode){
+            if(!treeNode||treeNode.loadData){
+                return true;
+            }
+            var zTree=$.fn.zTree.getZTreeObj(treeId);
+            treeNode.icon = loadingIcoUrl;
+            zTree.updateNode(treeNode);
+            $.post('@Url.Action("LoadChildJobGroups","Task")',{parentId:treeNode.id},function(res){
+                if(!res){
+                    return;
+                }
+                var childNodes=JSON.parse(res.ChildNodes);
+                zTree.addNodes(treeNode, -1, childNodes);
+                treeNode.loadData = true;
+                treeNode.icon = "";
+                zTree.updateNode(treeNode);
+                zTree.expandNode(treeNode,true);
+                var childJobGroups=JSON.parse(res.JobGroupData);
+                for(var c in childJobGroups){
+                    allJobGroups[c]=childJobGroups[c];
+                }
+            });
+            return false;
+        }
+
+        //选择工作分组展开
+        function SelectBeforeExpand(treeId, treeNode){
+            if(!treeNode||treeNode.loadData){
+                return true;
+            }
+            if(editJobGroup&&treeNode.level>=selectNodeLevel-1){
+                return true;
+            }
+            var zTree=$.fn.zTree.getZTreeObj(treeId);
+            treeNode.icon = loadingIcoUrl;
+            zTree.updateNode(treeNode);
+            $.post('@Url.Action("LoadChildJobGroups","Task")',{parentId:treeNode.id},function(res){
+                if(!res){
+                    return;
+                }
+                var childNodes=JSON.parse(res.ChildNodes);
+                zTree.addNodes(treeNode, -1, childNodes);
+                treeNode.loadData = true;
+                treeNode.icon = "";
+                zTree.updateNode(treeNode);
+                zTree.expandNode(treeNode,true);
+                var childJobGroups=JSON.parse(res.JobGroupData);
+                for(var c in childJobGroups){
+                    allJobGroups[c]=childJobGroups[c];
+                }
+            });
+            return false;
+        }
+
+        //显示任务管理窗口
+        function ShowDetailForm(){
+            LoadJobs();
+            $("#detail_tabform").removeClass("hide");
+            $(window).resize();
+        }
+
+        //隐藏任务管理窗口
+        function HideDetailForm(){
+            $("#detail_tabform").addClass("hide");
+            $("#job_tabe_page_list").html("");
+        }
+
+        function InitUI(){
+            var bodyHeight=$("#body_con").height();
+            var formGroupHeight=$("#jobgroup_form_con").height();
+            $("#detail_tabform").height(bodyHeight-formGroupHeight-35);
+            var jobSearchEle=$("#job_search");
+            $("#job_table").height(jobSearchEle.parent().height()-jobSearchEle.outerHeight());
+            $("#job_tabe_page_list").height($("#job_table").height()-$("#job_table thead").height());
+            UILayout();
+        }
+
+        //加载任务信息
+        function LoadJobs(){
+            if(!editJobGroup){
+                return;
+            }
+            $("#job_tabe_page_list").html("");
+            var loadUrl='@Url.Action("GetGroupJobs", "Task")';
+            $.post(loadUrl,{groupId:editJobGroup.Code,key:$.trim($("#search_jobname").val())},function(res){
+                ReplaceDataTableData("#job_table",JSON.parse(res.Datas));
+                $(window).resize();
+                InitDataTableChecked("#job_table");
+            });
+        }
+
+        //打开工作任务编辑页面
+        function OpenEditJobPage(url, tit) {
+            if (!url || $.trim(url) == "") {
+                return;
+            }
+            window.top.OpenNewTabPage(url, tit);
+        }
+
+        //删除工作任务
+        function DeleteJob(sysNos) {
+            if (!sysNos || sysNos == "") {
+                return;
+            }
+            ConfirmMsg('确认删除工作任务吗?', function () {
+                $.post('@Url.Action("DeleteJob","Task")', { jobIds: sysNos }, function (res) {
+                    ResultMsg(res);
+                    if (res.Success) {
+                        LoadJobs();
+                    }
+                });
+            });
+        };
+
+        //获取选中的任务
+        function GetSelectJobs() {
+            return GetDataTableCheckedValues('#job_table');
+        }
+    </script>
+}
+

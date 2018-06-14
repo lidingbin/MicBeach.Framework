@@ -1,0 +1,308 @@
+﻿@{
+    ViewBag.Title = "任务选择";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/style/ztree")
+@using MicBeach.Util.Extension;
+@using MicBeach.CTask;
+@using MicBeach.Util.Serialize;
+@{
+    string nodeString = ViewBag.AllNodes;
+    if (nodeString.IsNullOrEmpty())
+    {
+        nodeString = "[]";
+    }
+    var jobStatus = JobState.停止.GetType().GetEnumValueAndNames();
+}
+@model MicBeach.ViewModel.Sys.AuthorityGroupViewModel
+<div id="pc-body">
+    <div id="pc-body-inner">
+        <div class="w-200 hp-100 fl">
+            <div class="treelistgroup c_pagecon bd-rad-0">
+                <div class="c_body tlg_treecon bd-lw-0 bd-bw-0">
+                    <div class="c_bodyinner">
+                        <ul id="JobGroup_tree" class="ztree"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hp-100 c_pagecon">
+            <div class="c_body">
+                <div class="form_tabgroup c_pagecon">
+                    <ul class="nav nav-tabs c_head" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#s_list" role="tab" data-toggle="tab">任务</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#s_selected" role="tab" data-toggle="tab">已选</a>
+                        </li>
+                    </ul>
+                    <div class="form_tabgconent tab-content dialog c_body">
+                        <div role="tabpanel" class="tab-pane active c_pagecon" id="s_list">
+                            <div class="c_head panel panel-default  mg-0 bd-w-0 bd-rad-0">
+                                <div class="panel-body pd-10">
+                                    <div class="lis_search">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control w-200" id="search_authname" placeholder="任务名称">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default fc_3" type="button" id="searchbusiness_btn" onclick="LoadJobs()"><i class="glyphicon glyphicon-search"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="c_body">
+                                <table class="table table-striped table-bordered nowrap wp-100 bd-lw-0" id="job_table" cellpadding="0" cellspacing="0"></table>
+                            </div>
+
+                            <div class="c_foot" id="tab_pager"></div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane c_pagecon" id="s_selected">
+                            <div class="c_head panel panel-default mg-0 bd-w-0 bd-rad-0">
+                                <div class="panel-body pd-10">
+                                    <div class="lis_lefttool txt-right">
+                                        <button type="button" class="btn btn-danger" id="btn_cacheallselected"><i class="glyphicon glyphicon-trash"></i> 取消全部</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="c_body">
+                                <table class="table table-striped table-bordered nowrap wp-100 bd-lw-0" id="selected_job_table" cellpadding="0" cellspacing="0"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="pc-foot">
+    <div class="txt-right form-submitbtn-con pdr-10"><button type="button" onclick="ConfirmSelect()" class="btn btn-blue"><i class="glyphicon glyphicon-ok"></i> 确定</button></div>
+</div>
+@section Scripts
+{
+    @Scripts.Render("~/scripts/ztree")
+    <script type="text/javascript">
+        BodyScroll = false
+        HasDivPageCon = true;
+        TabConentScroll=true;
+        var imgPath = "";
+        var loadingIcoUrl = '/Content/Scripts/ztree/img/loading.gif';
+        var selectGroupId = null;
+        var selectedJobObj=new Object();
+        var allDatas=new Object();
+        var selectObjects=new Array();
+        var jobStatusDic=new Object();
+        var seetings = {
+            view: {
+                nameIsHTML: true,
+                //showIcon:false
+            },
+            callback: {
+                onClick: AllJobGroupNodeClick,
+                beforeExpand: BeforeExpand,
+            },
+            check: {
+                enable: false,
+                chkboxType: { "Y": "", "N": "" }
+            },
+            edit: {
+                enable: true,
+                showRemoveBtn: false,
+                showRenameBtn: false,
+            }
+        };
+        var allNodes = @Html.Raw(nodeString);
+        var selectedNode = null;
+        $(function () {
+            jobStatusDic=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(jobStatus))');
+            InitAllJobGroupTree();
+            //选择
+            $("body").on('click','.btn_select_auth',function(){
+                SelectAuthority($(this));
+            });
+            //取消选择
+            $("body").on('click','.btn_select_cancel',function(){
+                CancelSelectJob($(this).attr('data-value'));
+            });
+            //取消全部
+            $("#btn_cacheallselected").click(function(){
+                for(var d in selectedJobObj){
+                    CancelSelectJob(d);
+                }
+            });
+            var columnConfigs=new Array();
+            var selectColumnConfigs=new Array();
+            for (var i = 0; i < 3; i++) {
+                var tit = '';
+                var data = '';
+                var width = '';
+                var className = '';
+                var render=null;
+                switch (i) {
+                    case 0:
+                        tit = "任务名称";
+                        data = "Name";
+                        width = "100px";
+                        break;
+                    case 1:
+                        tit = "状态";
+                        data = "State";
+                        width = "50px";
+                        className="txt-center";
+                        render=function(data, type, row, meta){
+                            return jobStatusDic[data];
+                        }
+                        break;
+                    case 2:
+                        tit = "任务地址";
+                        data = "JobPath";
+                        break;
+                }
+                var configItem = { "title": tit, "targets": i, "data": data, "width": width, "className": className, 'render': render };
+                columnConfigs.push(configItem);
+                selectColumnConfigs.push(configItem)
+            }
+            columnConfigs.push({
+                "title": "操作", "targets": 3, "data": function (row, type, val, meta) {
+                    return '<button type="button" data-value="'+row.Id+'" class="btn btn-xs btn-blue btn_select_auth">选择</button>';
+                }, width: '40px', className: 'txt-center'
+            });
+            selectColumnConfigs.push({
+                "title": "操作", "targets": 3, "data": function (row, type, val, meta) {
+                    return '<button type="button" data-value="' + row.Id + '" class="btn btn-xs btn-danger btn_select_cancel">取消</button>';
+                }, width: '40px', className: 'txt-center'
+            });
+            InitDataTable({
+                TableEle: '#job_table',
+                "columnDefs": columnConfigs
+            });
+            InitDataTable({
+                TableEle: '#selected_job_table',
+                "columnDefs": selectColumnConfigs
+            });
+            LayoutCallbackEvent=InitSelectData;
+        });
+
+        //选择权限
+        function SelectAuthority(btn){
+            if(!btn){
+                return;
+            }
+            var sysNo=$.trim(btn.attr('data-value'));
+            if(sysNo==''){
+                return;
+            }
+            var nowSelectItem=selectedJobObj[sysNo];
+            btn.removeClass('btn_select_auth').removeClass('btn-blue').addClass('btn_select_cancel').addClass('btn-danger').html('取消');
+            if(nowSelectItem){
+                return;
+            }
+            var nowAuthData=allDatas[sysNo];
+            if(!nowAuthData){
+                return;
+            }
+            selectedJobObj[sysNo]=true;
+            selectObjects.push(nowAuthData);
+            AddDataTableData("#selected_job_table",[nowAuthData]);
+        }
+
+        //取消选择
+        function CancelSelectJob(sysNo){
+            if(!sysNo){
+                return;
+            }
+            var selectItem=selectedJobObj[sysNo];
+            if(!selectItem){
+                return;
+            }
+            $('.btn_select_cancel[data-value="'+sysNo+'"]').removeClass('btn_select_cancel').removeClass('btn-danger').addClass('btn_select_auth').addClass('btn-blue').html('选择');
+            selectedJobObj[sysNo]=false;
+            for (var d in selectObjects) {
+                if (selectObjects[d].Id == sysNo) {
+                    selectObjects.splice(d, 1);
+                    break;
+                }
+            }
+            ReplaceDataTableData("#selected_job_table",selectObjects);
+        }
+
+        //左侧权限分组节点选择
+        function AllJobGroupNodeClick(event, treeId, treeNode) {
+            selectGroupId=treeNode.id;
+            selectedNode = treeNode;
+            $.fn.zTree.getZTreeObj("JobGroup_tree").selectNode(treeNode, false);
+            LoadJobs();
+        }
+
+        //初始化所有权限分组树控件
+        function InitAllJobGroupTree() {
+            $.fn.zTree.init($("#JobGroup_tree"), seetings, allNodes);
+        }
+
+        //展开加载数据
+        function BeforeExpand(treeId, treeNode){
+            if(!treeNode||treeNode.loadData){
+                return true;
+            }
+            var zTree=$.fn.zTree.getZTreeObj(treeId);
+            treeNode.icon = loadingIcoUrl;
+            zTree.updateNode(treeNode);
+            $.post('@Url.Action("LoadChildJobGroups", "Task")',{parentId:treeNode.id},function(res){
+                if(!res){
+                    return;
+                }
+                var childNodes=JSON.parse(res.ChildNodes);
+                zTree.addNodes(treeNode, -1, childNodes);
+                treeNode.loadData = true;
+                treeNode.icon = "";
+                zTree.updateNode(treeNode);
+                zTree.expandNode(treeNode,true);
+                var childAuthorityGroups=JSON.parse(res.AuthorityGroupData);
+            });
+            return false;
+        }
+
+        //加载任务数据
+        function LoadJobs(){
+            if(!selectGroupId){
+                return;
+            }
+            var loadUrl='@Url.Action("JobMultiSelectSearch", "Task")';
+            $.post(loadUrl,{Group:selectGroupId,Name:$.trim($("#search_authname").val())},function(res){
+                var operatinDatas=JSON.parse(res.Datas);
+                ReplaceDataTableData("#job_table",operatinDatas);
+                for (var p in operatinDatas) {
+                    var data = operatinDatas[p];
+                    allDatas[data.Id] = data;
+                }
+                $(window).resize();
+            });
+        }
+
+        //初始化已选择的数据
+        function InitSelectData(){
+            if(!selectedJobObj){
+                return;
+            }
+            for(var sysNo in selectedJobObj){
+                if(!selectedJobObj[sysNo]){
+                    continue;
+                }
+                $('.btn_select_auth[data-value="' + sysNo + '"]').each(function(i,e){
+                    SelectAuthority($(e));
+                });
+            }
+        }
+
+        //确认选择
+        function ConfirmSelect(){
+            art.dialog.close(true);
+            art.dialog.opener.JobMultiSelectCallback(selectObjects);
+        }
+
+    </script>
+}
+

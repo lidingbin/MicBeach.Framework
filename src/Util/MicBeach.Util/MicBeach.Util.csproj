@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F8B68EB5-6A31-4C2D-9193-65750C9E5A3E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MicBeach.Util</RootNamespace>
+    <AssemblyName>MicBeach.Util</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Code\GoodsCode.cs" />
+    <Compile Include="Code\GuidCode.cs" />
+    <Compile Include="Code\RandomNumber.cs" />
+    <Compile Include="Code\SerialNumber.cs" />
+    <Compile Include="Data\Address.cs" />
+    <Compile Include="Data\Birth.cs" />
+    <Compile Include="Data\ChineseText.cs" />
+    <Compile Include="Data\Contact.cs" />
+    <Compile Include="Data\DataConverter.cs" />
+    <Compile Include="Data\FileObject.cs" />
+    <Compile Include="Data\LazyMember.cs" />
+    <Compile Include="Data\Money.cs" />
+    <Compile Include="Data\Person.cs" />
+    <Compile Include="ExpressionUtil\BinaryExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\CachedExpressionCompiler.cs" />
+    <Compile Include="ExpressionUtil\ConditionalExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\ConstantExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\DefaultExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\ExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\ExpressionFingerprintChain.cs" />
+    <Compile Include="ExpressionUtil\ExpressionHelper.cs" />
+    <Compile Include="ExpressionUtil\FingerprintingExpressionVisitor.cs" />
+    <Compile Include="ExpressionUtil\HashCodeCombiner.cs" />
+    <Compile Include="ExpressionUtil\Hoisted.cs" />
+    <Compile Include="ExpressionUtil\HoistingExpressionVisitor.cs" />
+    <Compile Include="ExpressionUtil\IndexExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\LambdaExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\MemberExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\MethodCallExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\ParameterExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\TypeBinaryExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\UnaryExpressionFingerprint.cs" />
+    <Compile Include="Extension\DateTimeExtension.cs" />
+    <Compile Include="Extension\GuidExtension.cs" />
+    <Compile Include="Extension\IEnumerableExtension.cs" />
+    <Compile Include="Extension\NumberExtension.cs" />
+    <Compile Include="Extension\ObjectExtension.cs" />
+    <Compile Include="Extension\StreamExtension.cs" />
+    <Compile Include="Extension\StringExtension.cs" />
+    <Compile Include="Extension\TypeExtension.cs" />
+    <Compile Include="Extension\VerifyExtension.cs" />
+    <Compile Include="IoC\ContainerManager.cs" />
+    <Compile Include="IoC\IDIContainer.cs" />
+    <Compile Include="Language\IChineseLanguage.cs" />
+    <Compile Include="Net\FileFilter.cs" />
+    <Compile Include="Net\HttpUtil.cs" />
+    <Compile Include="Net\UploadFileInfo.cs" />
+    <Compile Include="Net\UploadOption.cs" />
+    <Compile Include="Net\UploadResult.cs" />
+    <Compile Include="ObjectMap\IObjectMap.cs" />
+    <Compile Include="ObjectMap\ObjectMapManager.cs" />
+    <Compile Include="Paging\IPaging.cs" />
+    <Compile Include="Paging\Paging.cs" />
+    <Compile Include="Paging\PagingFilter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Response\Result.cs" />
+    <Compile Include="Security\EncryptionHelper.cs" />
+    <Compile Include="Security\MD5.cs" />
+    <Compile Include="Serialize\BinarySerialize.cs" />
+    <Compile Include="Serialize\IJsonSerializer.cs" />
+    <Compile Include="Serialize\JsonSerialize.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

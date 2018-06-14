@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EE219485-E7C7-4DD7-882C-0394F5E29D14}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MicBeach.DTO.Task</RootNamespace>
+    <AssemblyName>MicBeach.DTO.Task</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MicBeach.CTask, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\MicBeach.CTask.1.0.1\lib\net461\MicBeach.CTask.dll</HintPath>
+    </Reference>
+    <Reference Include="MicBeach.Util, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\MicBeach.Util.1.0.2\lib\net46\MicBeach.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cmd\AnnualConditionDayCmdDto.cs" />
+    <Compile Include="Cmd\DeleteExecuteLogCmdDto.cs" />
+    <Compile Include="Cmd\DeleteJobCmdDto.cs" />
+    <Compile Include="Cmd\DeleteJobFileCmdDto.cs" />
+    <Compile Include="Cmd\DeleteJobGroupCmdDto.cs" />
+    <Compile Include="Cmd\DeleteJobServerHostCmdDto.cs" />
+    <Compile Include="Cmd\DeleteServerNodeCmdDto.cs" />
+    <Compile Include="Cmd\DeleteTriggerCmdDto.cs" />
+    <Compile Include="Cmd\DeleteTriggerServerCmdDto.cs" />
+    <Compile Include="Cmd\ErrorLogCmdDto.cs" />
+    <Compile Include="Cmd\ExecuteLogCmdDto.cs" />
+    <Compile Include="Cmd\ExpressionItemCmdDto.cs" />
+    <Compile Include="Cmd\ExpressionTriggerCmdDto.cs" />
+    <Compile Include="Cmd\FullDateConditionDateCmdDto.cs" />
+    <Compile Include="Cmd\JobCmdDto.cs" />
+    <Compile Include="Cmd\JobFileCmdDto.cs" />
+    <Compile Include="Cmd\JobGroupCmdDto.cs" />
+    <Compile Include="Cmd\JobServerHostCmdDto.cs" />
+    <Compile Include="Cmd\ModifyJobGroupSortCmdDto.cs" />
+    <Compile Include="Cmd\ModifyJobRunStateCmdDto.cs" />
+    <Compile Include="Cmd\ModifyJobServerHostRunStateCmdDto.cs" />
+    <Compile Include="Cmd\ModifyServerNodeRunStateCmdDto.cs" />
+    <Compile Include="Cmd\ModifyTriggerServerRunStateCmdDto.cs" />
+    <Compile Include="Cmd\ModifyTriggerStateCmdDto.cs" />
+    <Compile Include="Cmd\MonthConditionDayCmdDto.cs" />
+    <Compile Include="Cmd\SaveErrorLogCmdDto.cs" />
+    <Compile Include="Cmd\SaveExecuteLogCmdDto.cs" />
+    <Compile Include="Cmd\SaveJobCmdDto.cs" />
+    <Compile Include="Cmd\SaveJobFileCmdDto.cs" />
+    <Compile Include="Cmd\SaveJobServerHostCmdDto.cs" />
+    <Compile Include="Cmd\SaveServerNodeCmdDto.cs" />
+    <Compile Include="Cmd\SaveTriggerCmdDto.cs" />
+    <Compile Include="Cmd\SaveTriggerServerCmdDto.cs" />
+    <Compile Include="Cmd\ServerNodeCmdDto.cs" />
+    <Compile Include="Cmd\SimpleTriggerCmdDto.cs" />
+    <Compile Include="Cmd\TriggerAnnualConditionCmdDto.cs" />
+    <Compile Include="Cmd\TriggerCmdDto.cs" />
+    <Compile Include="Cmd\TriggerConditionCmdDto.cs" />
+    <Compile Include="Cmd\TriggerDailyConditionCmdDto.cs" />
+    <Compile Include="Cmd\TriggerExpressionConditionCmdDto.cs" />
+    <Compile Include="Cmd\TriggerFullDateConditionCmdDto.cs" />
+    <Compile Include="Cmd\TriggerMonthlyConditionCmdDto.cs" />
+    <Compile Include="Cmd\TriggerServerCmdDto.cs" />
+    <Compile Include="Cmd\TriggerWeeklyConditionCmdDto.cs" />
+    <Compile Include="Cmd\WeeklyConditionDayCmdDto.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query\AnnualConditionDayDto.cs" />
+    <Compile Include="Query\ErrorLogDto.cs" />
+    <Compile Include="Query\ExecuteLogDto.cs" />
+    <Compile Include="Query\ExpressionItemDto.cs" />
+    <Compile Include="Query\ExpressionTriggerDto.cs" />
+    <Compile Include="Query\Filter\ErrorLogFilterDto.cs" />
+    <Compile Include="Query\Filter\ExecuteLogFilterDto.cs" />
+    <Compile Include="Query\Filter\JobFileFilterDto.cs" />
+    <Compile Include="Query\Filter\JobFilterDto.cs" />
+    <Compile Include="Query\Filter\JobGroupFilterDto.cs" />
+    <Compile Include="Query\Filter\JobServerHostFilterDto.cs" />
+    <Compile Include="Query\Filter\ServerNodeFilterDto.cs" />
+    <Compile Include="Query\Filter\ServerScheduleTriggerFilterDto.cs" />
+    <Compile Include="Query\Filter\ServerTriggerFilterDto.cs" />
+    <Compile Include="Query\Filter\TriggerFilterDto.cs" />
+    <Compile Include="Query\Filter\TriggerServerFilterDto.cs" />
+    <Compile Include="Query\FullDateConditionDateDto.cs" />
+    <Compile Include="Query\JobDto.cs" />
+    <Compile Include="Query\JobFileDto.cs" />
+    <Compile Include="Query\JobGroupDto.cs" />
+    <Compile Include="Query\JobServerHostDto.cs" />
+    <Compile Include="Query\MonthConditionDayDto.cs" />
+    <Compile Include="Query\ServerNodeDto.cs" />
+    <Compile Include="Query\SimpleTriggerDto.cs" />
+    <Compile Include="Query\TriggerAnnualConditionDto.cs" />
+    <Compile Include="Query\TriggerConditionDto.cs" />
+    <Compile Include="Query\TriggerDailyConditionDto.cs" />
+    <Compile Include="Query\TriggerDto.cs" />
+    <Compile Include="Query\TriggerExpressionConditionDto.cs" />
+    <Compile Include="Query\TriggerFullDateConditionDto.cs" />
+    <Compile Include="Query\TriggerMonthlyConditionDto.cs" />
+    <Compile Include="Query\TriggerServerDto.cs" />
+    <Compile Include="Query\TriggerWeeklyConditionDto.cs" />
+    <Compile Include="Query\WeeklyConditionDayDto.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

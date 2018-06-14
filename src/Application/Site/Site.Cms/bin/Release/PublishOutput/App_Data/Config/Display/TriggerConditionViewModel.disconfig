@@ -1,0 +1,15 @@
+﻿{
+    "types": [
+        {
+            "typeName": "MicBeach.ViewModel.Task.TriggerConditionViewModel,MicBeach.ViewModel.Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "displays": [
+                {
+                    "name": "Type",
+                    "display": {
+                        "displayTxt": "附加限制策略"
+                    }
+                }
+            ]
+        }
+    ]
+}

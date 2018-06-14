@@ -1,0 +1,16 @@
+﻿html,body {
+    margin:0px;
+    padding:0px;
+    width:100%;
+    height:100%;
+}
+
+/*404页面*/
+.notfound_bg {
+    background:url('../images/404bg1.png') no-repeat center center;
+}
+
+/*错误页面*/
+.error_bg {
+    background:url('../images/500bg1.png') no-repeat center center;
+}

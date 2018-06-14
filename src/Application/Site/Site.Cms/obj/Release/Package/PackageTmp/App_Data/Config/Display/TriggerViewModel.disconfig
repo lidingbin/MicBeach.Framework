@@ -1,0 +1,99 @@
+﻿{
+  "types": [
+    {
+      "typeName": "MicBeach.ViewModel.Task.TriggerViewModel,MicBeach.ViewModel.Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "displays": [
+        {
+          "name": "ApplyTo",
+          "display": {
+            "displayTxt": "应用对象"
+          }
+        },
+        {
+          "name": "Description",
+          "display": {
+            "displayTxt": "说明"
+          }
+        },
+        {
+          "name": "EndTime",
+          "display": {
+            "displayTxt": "结束时间"
+          }
+        },
+        {
+          "name": "FireTotalCount",
+          "display": {
+            "displayTxt": "执行总数"
+          }
+        },
+        {
+          "name": "Id",
+          "display": {
+            "displayTxt": "编号"
+          }
+        },
+        {
+          "name": "Job",
+          "display": {
+            "displayTxt": "应用任务"
+          }
+        },
+        {
+          "name": "MisFireType",
+          "display": {
+            "displayTxt": "丢失处理"
+          }
+        },
+        {
+          "name": "Name",
+          "display": {
+            "displayTxt": "名称"
+          }
+        },
+        {
+          "name": "NextFirTime",
+          "display": {
+            "displayTxt": "下一次触发时间"
+          }
+        },
+        {
+          "name": "PrevFireTime",
+          "display": {
+            "displayTxt": "上一次触发时间"
+          }
+        },
+        {
+          "name": "Priority",
+          "display": {
+            "displayTxt": "优先级"
+          }
+        },
+        {
+          "name": "StartTime",
+          "display": {
+            "displayTxt": "开始时间"
+          }
+        },
+        {
+          "name": "State",
+          "display": {
+            "displayTxt": "状态"
+          }
+        },
+        {
+          "name": "Type",
+          "display": {
+            "displayTxt": "执行策略"
+          }
+        },
+        {
+          "name": "Condition_Type",
+          "display": {
+            "displayTxt": "附加条件"
+          }
+        }
+      ]
+    }
+  ]
+}

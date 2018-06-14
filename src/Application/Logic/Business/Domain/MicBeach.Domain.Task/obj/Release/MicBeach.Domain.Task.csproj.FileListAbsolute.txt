@@ -1,0 +1,14 @@
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Logic\Business\Domain\MicBeach.Domain.Task\bin\Release\MicBeach.Domain.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Logic\Business\Domain\MicBeach.Domain.Task\bin\Release\MicBeach.Domain.Task.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Logic\Business\Domain\MicBeach.Domain.Task\bin\Release\MicBeach.Application.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Logic\Business\Domain\MicBeach.Domain.Task\bin\Release\MicBeach.CTask.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Logic\Business\Domain\MicBeach.Domain.Task\bin\Release\MicBeach.Develop.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Logic\Business\Domain\MicBeach.Domain.Task\bin\Release\MicBeach.Query.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Logic\Business\Domain\MicBeach.Domain.Task\bin\Release\MicBeach.Util.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Logic\Business\Domain\MicBeach.Domain.Task\bin\Release\MicBeach.Develop.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Logic\Business\Domain\MicBeach.Domain.Task\bin\Release\MicBeach.Query.Task.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Logic\Business\Domain\MicBeach.Domain.Task\obj\Release\MicBeach.Domain.Task.csprojResolveAssemblyReference.cache
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Logic\Business\Domain\MicBeach.Domain.Task\obj\Release\MicBeach.Domain.Task.csproj.CoreCompileInputs.cache
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Logic\Business\Domain\MicBeach.Domain.Task\obj\Release\MicBeach.Domain.Task.csproj.CopyComplete
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Logic\Business\Domain\MicBeach.Domain.Task\obj\Release\MicBeach.Domain.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Logic\Business\Domain\MicBeach.Domain.Task\obj\Release\MicBeach.Domain.Task.pdb

@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "任务异常日志管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="pc-head" class="container pd-0 wp-100 pdt-10 pdb-10">
+        <div class="row pd-0 mg-0">
+            <div class="column lis_search">
+                <label class="stit">开始时间</label><span class="sctrol"><input type="text" id="search_errorlogbegintime" placeholder="" readonly="readonly" class="form-control w-150 DateTime" />-<input type="text" id="search_errorlogendtime" placeholder="" class="form-control w-150 DateTime" readonly="readonly" /></span>
+                <button class="btn btn-default fc_3" type="button" onclick="SearchErrorLog()"><i class="glyphicon glyphicon-search"></i> 搜索</button>
+            </div>
+        </div>
+</div>
+
+<div id="pc-body">
+    <div id="pc-body-inner">
+        <table class="table table-striped table-bordered nowrap wp-100 bd-lw-0" id="errorlog_table" cellpadding="0" cellspacing="0">
+        </table>
+    </div>
+</div>
+
+<div id="pc-foot" class="wp-100 bd-t-solid bd-t-ddd bd-tw-1"></div>
+@section Scripts{
+@Scripts.Render("~/scripts/date")
+    <script type="text/javascript">
+        BodyScroll = false;
+        $(function () {
+            InitDataTable({
+                TableEle: '#errorlog_table',
+                "columnDefs": [
+                            { "title": '服务节点', "targets": 0, "data": "Server.Name", "width": '150px', "className": '' },
+                            { "title": '服务地址', "targets": 1, "data": "Server.Host", "width": '200px', "className": '' },
+                            { "title": '工作任务', "targets": 2, "data": "Job.Name", "width": '150px'},
+                            {
+                                "title": '时间', "targets": 3, "data": "Date", width: '130px', className: 'txt-center', render: function (data, type, row, meta) {
+                                    return moment(data).format("YYYY-MM-DD HH:mm:ss");
+                                }
+                            },
+                            { "title": '错误消息', "targets": 4, "data": "Message" },
+                            {
+                                "title": "操作", "targets": 5, "data": function (row, type, val, meta) {
+                                    var menuItems = new Array();
+                                    menuItems.push('<li><a href="javascript:void(0)" class="btn_errorlogdetail" errorno="_errorNo"><i class="glyphicon glyphicon-list-alt"></i> 详情</a></li>'.replace('_errorNo', row.Id));
+                                    var menuString = menuItems.join('');
+                                    return '<div class="btn-group"><button type="button" class="btn btn-blue dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">管理 <span class="caret"></span></button><ul class="dropdown-menu list-dropdown-menu w-62">' + menuString + '</ul></div>';
+                                }, width: '62px', className: 'txt-center'
+                            }
+                ]
+            });
+
+            SearchErrorLog();
+
+            //搜索事件
+            $("#search_btn").click(function () {
+                SearchErrorLog();
+            });
+
+            //错误日志详情
+            $("body").on('click', '.btn_errorlogdetail', function () {
+                var errorNo = $.trim($(this).attr("errorno"));
+                if (errorNo == "") {
+                    return;
+                }
+                DialogPage({
+                    url: '@Html.Raw(Url.Action("ErrorLogDetail", "Task",new { id = "_eid" }))'.replace('_eid', errorNo),
+                    width: "600px",
+                    height: "400px",
+                    title: '错误详情',
+                    ok: false,
+                    cancel: null
+                });
+            });
+        })
+
+        //搜索任务异常日志
+        function SearchErrorLog() {
+            var beginTime = $.trim($("#search_errorlogbegintime").val());
+            var endTime = $.trim($("#search_errorlogendtime").val());
+            var data = {
+                BeginDate: beginTime,
+                EndDate: endTime
+            };
+            PageSearch({
+                url: '@Url.Action("SearchErrorLog","Task")',
+                listEle: '#errorlog_table',
+                data: data
+            });
+        }
+    </script>
+}

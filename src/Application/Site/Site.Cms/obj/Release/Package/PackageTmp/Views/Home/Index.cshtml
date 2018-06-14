@@ -1,0 +1,100 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>管理系统</title>
+    @Styles.Render("~/style/bootstrap", "~/style/common", "~/style/index")
+</head>
+<body>
+    <!--bg-->
+    <div id="cms-bg" class="ps-absolute wp-100 hp-100 over-hidden zindex-n-10">
+        <img src="~/Content/Style/images/loginbg01.jpg" class="wp-100 hp-100" />
+    </div>
+    <!--head-->
+    <div id="cms-head" class="h-50 wp-100 container">
+        <div class="row hp-100">
+            <div class="column col-xs-0 col-sm-6 col-md-6 col-lg-4 hidden-xs hp-100 "></div>
+            <div class="column col-xs-0 col-sm-0 col-md-0 col-lg-5 hidden-xs hidden-sm hidden-md hp-100"></div>
+            <div class="column col-xs-12 col-sm-6 col-md-6 col-lg-3 hp-100 lh-50 txt-right">
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle clr-fff fs-12 bd-w-0 bd-rad-0" type="button" id="head-member-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <i class="glyphicon glyphicon-user"></i> admin <span class="caret"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cms-body" class="container wp-100 pd-0">
+        <div class="row hp-100 pd-0 mg-0">
+            <div class="hp-100 w-100 pd-0 fl" id="body-nav-col">
+                <div id="nav-left" class="w-100 hp-100 ps-relative fl">
+                    <div id="nav-roll-top-btn" class="nav-roll-btn ps-absolute top-0 wp-100 lh-20 txt-center clr-fff zindex-10"><i class="glyphicon glyphicon-chevron-up"></i></div>
+                    <div id="nav-menucon">
+                        <ul>
+                            <li>
+                                <div class="mico mymenus"></div>
+                                <div class="menuname">系统管理</div>
+                                <div class="menu_list">
+                                    <div class="menul_inner">
+                                        <h3 class="menugroup_title fs-12 mg-0 pd-5">任务调度</h3>
+                                        <div class="menu_listcon">
+                                            <ul class="list-group">
+                                                <li class="list-group-item pdl-10 pdt-5 pdb-5 pdr-0 fs-12"><a href="@Url.Action("ServerNodeList", "Task")">服务节点</a></li>
+                                                <li class="list-group-item pdl-10 pdt-5 pdb-5 pdr-0 fs-12"><a href="@Url.Action("JobGroupList", "Task")">工作任务</a></li>
+                                                <li class="list-group-item pdl-10 pdt-5 pdb-5 pdr-0 fs-12"><a href="@Url.Action("ErrorLogList", "Task")">异常日志</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="nav-roll-bottom-btn" class="nav-roll-btn ps-absolute bottom-0 wp-100 bd-bw-0 lh-20 txt-center clr-fff zindex-10"><i class="glyphicon glyphicon-chevron-down"></i></div>
+                </div>
+                <div id="nav-right" class="w-90 hp-100 over-hidden hide fl bd-r-ddd bd-rw-1 bd-r-solid">
+                </div>
+            </div>
+            <div class="hp-100 pd-0 fr" id="body-content-col">
+                <div id="cbr-head">
+                    <div id="h-rbtncon">
+                        <button class="btn btn-blue btn-xs fc_3" type="button" id="ref_curpagebtn" title="刷新"><i class="glyphicon glyphicon-refresh"></i></button>
+                        <button class="btn-xs btn btn-danger fc_3" id="close_otpagebtn" type="button" title="关闭其它"><i class="glyphicon glyphicon-remove-circle"></i></button>
+                        <button class="btn-xs btn btn-success fc_3 rbtn" type="button" title="全屏" id="full_screebtn"><i class="glyphicon glyphicon-fullscreen"></i></button>
+                    </div>
+                    <div id="h-tabcon">
+                        <div class="tab-lrbtn left-btn"></div>
+                        <div class="tab-lrbtn right-btn">
+                        </div>
+                        <ul></ul>
+                    </div>
+                </div>
+                <div id="cbr-pagecon">
+                    <div id="page_innercon">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="loading_con">
+        <div id="loading_bg"></div>
+        <div id="loading_img"></div>
+    </div>
+    @Scripts.Render("~/scripts/jquery", "~/scripts/jqueryui", "~/scripts/bootstrap", "~/scripts/mousewheel", "~/scripts/tool", "~/scripts/index", "~/scripts/slimscroll")
+    <script type="text/javascript">
+        var initPageUrls = [];//[{ url: "@Url.Action("Main", "Home")", tit: "主页", sico: true }, { url: "@Url.Action("Main", "Home")", tit: "主页", sico: true }];
+        $(function () {
+            //修改密码
+            $("#modifypwd_btn").click(function () {
+                OpenNewTabPage('@Url.Action("ModifyPassword","Sys")', '修改密码', true);
+            });
+            $(".menugroup_title").append(' <i class="glyphicon glyphicon-chevron-right fr"></i><i class="glyphicon glyphicon-chevron-down fr"></i>');
+        })
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\bin\Debug\MicBeach.DB.SQLServer.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\bin\Debug\MicBeach.DB.SQLServer.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\bin\Debug\Dapper.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\bin\Debug\MicBeach.DB.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\bin\Debug\MicBeach.Develop.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\bin\Debug\MicBeach.Util.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\bin\Debug\MicBeach.Develop.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\bin\Debug\MicBeach.Util.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\bin\Debug\MicBeach.DB.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\bin\Debug\Dapper.xml
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\obj\Debug\MicBeach.DB.SQLServer.csprojResolveAssemblyReference.cache
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\obj\Debug\MicBeach.DB.SQLServer.csproj.CoreCompileInputs.cache
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\obj\Debug\MicBeach.DB.SQLServer.csproj.CopyComplete
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\obj\Debug\MicBeach.DB.SQLServer.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\DB\MicBeach.DB.SQLServer\obj\Debug\MicBeach.DB.SQLServer.pdb

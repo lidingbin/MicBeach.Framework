@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E3E3EF00-DB6B-4991-A5A0-08D50CB6522B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MicBeach.BusinessInterface.Task</RootNamespace>
+    <AssemblyName>MicBeach.BusinessInterface.Task</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IErrorLogBusiness.cs" />
+    <Compile Include="IExecuteLogBusiness.cs" />
+    <Compile Include="IJobBusiness.cs" />
+    <Compile Include="IJobFileBusiness.cs" />
+    <Compile Include="IJobGroupBusiness.cs" />
+    <Compile Include="IJobServerHostBusiness.cs" />
+    <Compile Include="IServerNodeBusiness.cs" />
+    <Compile Include="ITriggerBusiness.cs" />
+    <Compile Include="ITriggerServerBusiness.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Dev\MicBeach.Develop\MicBeach.Develop.csproj">
+      <Project>{d477f1d2-91b4-4521-b1e3-6d77be3b0d21}</Project>
+      <Name>MicBeach.Develop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Util\MicBeach.Util\MicBeach.Util.csproj">
+      <Project>{F8B68EB5-6A31-4C2D-9193-65750C9E5A3E}</Project>
+      <Name>MicBeach.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Model\DTO\MicBeach.DTO.Task\MicBeach.DTO.Task.csproj">
+      <Project>{EE219485-E7C7-4DD7-882C-0394F5E29D14}</Project>
+      <Name>MicBeach.DTO.Task</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Model\Query\MicBeach.Query.Task\MicBeach.Query.Task.csproj">
+      <Project>{92c4f119-847e-4fb0-8ff4-14e52d03022d}</Project>
+      <Name>MicBeach.Query.Task</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DataAccess\MicBeach.DataAccessInterface.Task\MicBeach.DataAccessInterface.Task.csproj">
+      <Project>{9c353737-98a1-4ad3-896e-0710e27e71e7}</Project>
+      <Name>MicBeach.DataAccessInterface.Task</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

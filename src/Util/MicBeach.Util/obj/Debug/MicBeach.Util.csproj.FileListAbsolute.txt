@@ -1,0 +1,6 @@
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Util\MicBeach.Util\bin\Debug\MicBeach.Util.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Util\MicBeach.Util\bin\Debug\MicBeach.Util.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Util\MicBeach.Util\obj\Debug\MicBeach.Util.csproj.CoreCompileInputs.cache
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Util\MicBeach.Util\obj\Debug\MicBeach.Util.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Util\MicBeach.Util\obj\Debug\MicBeach.Util.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Util\MicBeach.Util\obj\Debug\MicBeach.Util.csprojResolveAssemblyReference.cache

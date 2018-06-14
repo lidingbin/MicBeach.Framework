@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "工作任务管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="pc_head">
+    <div class="panel panel-default  m_0 b_radnone b_b_none">
+        @*<div class="panel-heading pd_10 box-tit">
+                <h5 class="m_0"><strong>工作任务管理</strong></h5>
+            </div>*@
+        <div class="panel-body pd_10">
+            <div class="lis_lefttool">
+                <button class="btn-xs btn_blue h_30" id="create_btn"><i class="glyphicon glyphicon-plus"></i> 添加任务</button>
+                <button class="btn-xs btn_red h_30" id="deleteselect_btn"><i class="glyphicon glyphicon-trash"></i> 删除选中</button>
+            </div>
+
+            <div class="lis_search">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pc_body">
+    <div id="pcb-inner">
+        <table class="list_table scorlltable b_none" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+                    <th class="cb_col">
+                        <input type="checkbox" class="table_checkall" />
+                    </th>
+                    <th width="200px">名称</th>
+                    <th width="150px">分组</th>
+                    <th width="100px" class="t_c">类型</th>
+                    <th width="100px" class="t_c">状态</th>
+                    <th>说明</th>
+                    <th width="62px" class="t_c">操作</th>
+                </tr>
+            </thead>
+            <tbody id="tabe_page_list"></tbody>
+        </table>
+    </div>
+</div>
+
+<div id="pc_foot"></div>
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            BodyScroll = false;
+            PositionListTable = true;
+            SearchJob();
+
+            //搜索事件
+            $("#search_btn").click(function () {
+                SearchJob();
+            });
+
+            //创建工作任务
+            $("#create_btn").click(function () {
+                OpenEditJobPage('@Url.Action("EditJob","Task")', '添加工作任务');
+            });
+
+            //删除工作任务
+            $("body").on("click", ".btn_delete", function () {
+                var sysNo = $(this).attr("sysno");
+                DeleteJob(sysNo);
+            });
+
+            //删除选中
+            $("#deleteselect_btn").click(function () {
+                var checkedValues = GetCheckedSysNos();
+                if (!checkedValues || checkedValues.length <= 0) {
+                    ErrorMsg("还没有选择要删除的信息");
+                    return;
+                }
+                var checkedValueString = checkedValues.join(",");
+                DeleteJob(checkedValueString);
+            });
+
+            //编辑
+            $("body").on("click", ".btn_edit", function () {
+                var sysNo = $.trim($(this).attr("sysno"));
+                if (sysNo == "") {
+                    return;
+                }
+                var editUrl = '@Url.Action("EditJob", "Task", new { Id="sys_no"})'.replace('sys_no', sysNo);
+                OpenEditJobPage(editUrl, '编辑工作任务');
+            });
+
+            //详情
+            $("body").on("click", ".btn_detail", function () {
+                var sysNo = $.trim($(this).attr("sysno"));
+                if (sysNo == "") {
+                    return;
+                }
+                var editUrl = '@Url.Action("JobDetail", "Task", new { Id="sys_no"})'.replace('sys_no', sysNo);
+                OpenEditJobPage(editUrl, '任务详情');
+            });
+        });
+
+        //搜索工作任务
+        function SearchJob() {
+            var data = {};
+            PageSearch({
+                url: '@Url.Action("SearchJob","Task")',
+                data: data
+            });
+        }
+
+        //打开工作任务编辑页面
+        function OpenEditJobPage(url, tit) {
+            if (!url || $.trim(url) == "") {
+                return;
+            }
+            window.top.OpenNewTabPage(url, tit);
+        }
+
+        //删除工作任务
+        function DeleteJob(sysnos) {
+            if (!sysnos || sysnos == "") {
+                return;
+            }
+            ConfirmMsg('确认删除工作任务吗?', function () {
+                $.post('@Url.Action("DeleteJob","Task")', { sysNos: sysnos }, function (res) {
+                    ResultMsg(res);
+                    if (res.Status) {
+                        SearchJob();
+                    }
+                });
+            });
+        };
+    </script>
+}

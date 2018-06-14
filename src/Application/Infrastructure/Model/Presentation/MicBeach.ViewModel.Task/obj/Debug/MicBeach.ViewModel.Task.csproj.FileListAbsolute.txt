@@ -1,0 +1,9 @@
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Task\bin\Debug\MicBeach.ViewModel.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Task\bin\Debug\MicBeach.ViewModel.Task.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Task\bin\Debug\MicBeach.CTask.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Task\bin\Debug\MicBeach.Util.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Task\obj\Debug\MicBeach.ViewModel.Task.csproj.CoreCompileInputs.cache
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Task\obj\Debug\MicBeach.ViewModel.Task.csproj.CopyComplete
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Task\obj\Debug\MicBeach.ViewModel.Task.dll
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Task\obj\Debug\MicBeach.ViewModel.Task.pdb
+E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Task\obj\Debug\MicBeach.ViewModel.Task.csprojResolveAssemblyReference.cache

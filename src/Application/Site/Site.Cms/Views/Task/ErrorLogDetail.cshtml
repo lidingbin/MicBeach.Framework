@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "错误详情";
+}
+@using MicBeach.ViewModel.Task
+@model ErrorLogViewModel
+<div id="pc-body">
+    <div id="pc-body-inner">
+        <div class="form-con" id="home">
+            <table cellpadding="0" cellspacing="0" class="detail-table">
+                <tr>
+                    <td class="detail-tit w-100">服务：</td>
+                    <td class="detail-txt">
+                        @(Model.Server?.Name)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="detail-tit">服务地址：</td>
+                    <td class="detail-txt">
+                        @(Model.Server?.Host)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="detail-tit">工作任务：</td>
+                    <td class="detail-txt">
+                        @(Model.Job?.Name)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="detail-tit">时间：</td>
+                    <td class="detail-txt">
+                        @Model.Date.ToString("yyyy-MM-dd HH:mm:ss")
+                    </td>
+                </tr>
+                <tr>
+                    <td class="detail-tit">消息：</td>
+                    <td class="detail-txt">
+                        @Model.Message
+                    </td>
+                </tr>
+                <tr>
+                    <td class="detail-tit">详情：</td>
+                    <td class="detail-txt">
+                        @Model.Description
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+

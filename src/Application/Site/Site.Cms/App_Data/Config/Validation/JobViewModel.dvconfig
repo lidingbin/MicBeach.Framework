@@ -1,0 +1,85 @@
+﻿{
+    "rules": [
+        {
+            "typeName": "MicBeach.ViewModel.Task.JobViewModel,MicBeach.ViewModel.Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "rules": [
+                {
+                    "name": "Description",
+                    "rules": [
+                        {
+                            "maxValue": "50",
+                            "minValue": "0",
+                            "vtype": "StringLength",
+                            "errorMsg": "请填写50个字符内的说明",
+                            "tipMsg": true
+                        }
+                    ]
+                },
+                {
+                    "name": "Group",
+                    "rules": [
+                        {
+                            "vtype": "Required",
+                            "errorMsg": "请选择任务分组",
+                            "tipMsg": true
+                        }
+                    ]
+                },
+                {
+                    "name": "JobPath",
+                    "rules": [
+                        {
+                            "vtype": "Required",
+                            "errorMsg": "请填写500给字符内的任务地址",
+                            "tipMsg": true
+                        },
+                        {
+                            "maxValue": "500",
+                            "minValue": "1",
+                            "vtype": "StringLength",
+                            "errorMsg": "请填写500给字符内的任务地址",
+                            "tipMsg": false
+                        }
+                    ]
+                },
+                {
+                    "name": "Name",
+                    "rules": [
+                        {
+                            "vtype": "Required",
+                            "errorMsg": "请填写20个字符内的任务名称",
+                            "tipMsg": true
+                        },
+                        {
+                            "maxValue": "20",
+                            "minValue": "1",
+                            "vtype": "StringLength",
+                            "errorMsg": "请填写20个字符内的任务名称",
+                            "tipMsg": true
+                        }
+                    ]
+                },
+                {
+                    "name": "State",
+                    "rules": [
+                        {
+                            "vtype": "Required",
+                            "errorMsg": "请选择状态",
+                            "tipMsg": true
+                        }
+                    ]
+                },
+                {
+                    "name": "Type",
+                    "rules": [
+                        {
+                            "vtype": "Required",
+                            "errorMsg": "请指定任务类型",
+                            "tipMsg": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "编辑服务节点";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using MicBeach.Web.Mvc
+@using MicBeach.Util.Extension
+@using MicBeach.ViewModel.Task
+@using MicBeach.CTask
+@model ServerNodeViewModel
+@{
+    bool isAdd = Model.Id.IsNullOrEmpty();
+}
+<div id="pc-body">
+    <div id="pc-body-inner">
+        <div class="form-con" id="home">
+            @using (Ajax.BeginForm("EditServerNode", "Task", new AjaxOptions() { HttpMethod = "Post", OnSuccess = "SuccessCallback", OnFailure = "FailedCallback" }, new { id = "formvalide" }))
+            {
+                @Html.HiddenFor(c => c.Id)
+                @Html.HiddenFor(c => c.InstanceName)
+                <table cellpadding="0" cellspacing="0" class="form_table">
+                    <tr>
+                        <td class="txt-right tit">* @Html.LabelFor(c => c.Name)</td>
+                        <td>
+                            @Html.TextBoxFor(a => a.Name, new { @class = "form-control w-200" })
+                            @Html.DefaultValidationMessageFor(a => a.Name, "", new { @class = "tip prompt" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="txt-right tit">* @Html.LabelFor(c => c.State)</td>
+                        <td>
+                            @Html.EnumToSelect(a => a.State, ServerState.运行, new { @class = "form-control w-200" }, "", "选择状态", ((int)Model.State).ToString())
+                            @Html.DefaultValidationMessageFor(a => a.State, "", new { @class = "tip prompt" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="txt-right tit">* @Html.LabelFor(c => c.ThreadCount)</td>
+                        <td>
+                            @Html.TextBoxFor(a => a.ThreadCount, new { @class = "form-control w-200" })
+                            @Html.DefaultValidationMessageFor(a => a.ThreadCount, "", new { @class = "tip prompt" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="txt-right tit">* @Html.LabelFor(c => c.Host)</td>
+                        <td>
+                            @Html.TextBoxFor(a => a.Host, new { @class = "form-control w-400" })
+                            @Html.DefaultValidationMessageFor(a => a.Host, "", new { @class = "tip prompt" })
+                        </td>
+                    </tr>
+                    @*<tr>
+                            <td class="txt-right tit">* @Html.LabelFor(c => c.ThreadPriority)</td>
+                            <td>
+                                @Html.TextBoxFor(a => a.ThreadPriority, new { @class = "form-control w-200" })
+                                @Html.DefaultValidationMessageFor(a => a.ThreadPriority, "", new { @class = "tip prompt" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="txt-right tit">* @Html.LabelFor(c => c.Description)</td>
+                            <td>
+                                @Html.TextBoxFor(a => a.Description, new { @class = "form-control w-200" })
+                                @Html.DefaultValidationMessageFor(a => a.Description, "", new { @class = "tip prompt" })
+                            </td>
+                        </tr>*@
+                </table>
+            }
+        </div>
+    </div>
+</div>
+<div id="pc-foot">
+    <div class="txt-right form-submitbtn-con pdr-10"><button type="button" onclick="SubmitForm()" class="btn btn-blue">提交</button></div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        HasDivPageCon = true;
+        var isAdd = '@isAdd.ToString().ToLower()' == 'true';
+        var serverNodeDetailUrl = '@Url.Action("ServerNodeDetail", "Task",new { id="_id"})';
+        //提交表单
+        function SubmitForm() {
+            $("#formvalide").submit();
+        }
+
+        //成功回调
+        function SuccessCallback(res) {
+            if (!res) {
+                return;
+            }
+            ResultMsg(res);
+            if (res.Success) {
+                window.top.RedirectCurrentPage(serverNodeDetailUrl.replace('_id', res.Data.Id), '服务详情');
+            }
+        }
+
+        //失败回调
+        function FailedCallback(res) {
+            ErrorMsg('提交失败');
+        }
+    </script>
+}

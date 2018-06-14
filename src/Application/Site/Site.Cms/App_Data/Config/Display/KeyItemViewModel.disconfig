@@ -1,0 +1,33 @@
+﻿{
+    "types": [
+        {
+            "typeName": "MicBeach.ViewModel.Cache.KeyItemViewModel,MicBeach.ViewModel.Cache, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "displays": [
+                {
+                    "name": "Key",
+                    "display": {
+                        "displayTxt": "键"
+                    }
+                },
+                {
+                    "name": "Type",
+                    "display": {
+                        "displayTxt": "类型"
+                    }
+                },
+                {
+                    "name": "Value",
+                    "display": {
+                        "displayTxt": "值"
+                    }
+                },
+                {
+                    "name": "Seconds",
+                    "display": {
+                        "displayTxt": "有效期"
+                    }
+                }
+            ]
+        }
+    ]
+}

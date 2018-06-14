@@ -1,0 +1,155 @@
+﻿@{
+    ViewBag.Title = "服务节点管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using MicBeach.CTask;
+@using MicBeach.Util.Extension;
+@using MicBeach.Util.Serialize;
+@{ 
+    var serverStateValues = ServerState.运行.GetType().GetEnumValueAndNames();
+}
+<div id="pc-head" class="container pd-0 wp-100 pdt-10 pdb-10">
+    <div class="row pd-0 mg-0">
+            <div class="column col-lg-11 col-md-11 col-sm-11 col-xs-11 hidden-xs lis_search pd-0">
+                <label class="stit">编号</label><span class="sctrol"><input type="text" id="search_username" name="search_username" placeholder="" class="form-control" /></span>
+                <label class="stit">名称</label><span class="sctrol"><input type="text" id="search_contactkey" name="search_contactkey" placeholder="" class="form-control" /></span>
+                <label class="stit">地址</label><span class="sctrol"><input type="text" id="search_contactkey" name="search_contactkey" placeholder="" class="form-control w_200" /></span>
+                <button class="btn btn-default ml_5 fc_3" type="button" id="search_btn"><i class="glyphicon glyphicon-search"></i> 搜索</button>
+            </div>
+            <div class="column col-lg-1 col-md-1 col-sm-1 col-xs-12 pd-0 text-right">
+                <div class="btn-group mgr-5">
+                    <button type="button" class="btn btn-sm btn-blue dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        管理操作<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu left-n-38">
+                        <li><a href="javascript:void(0)" id="create_btn"><i class="glyphicon glyphicon-plus"></i> 添加服务</a></li>
+                        <li><a href="javascript:void(0)" id="deleteselect_btn"><i class="glyphicon glyphicon-trash"></i> 删除选中</a></li>
+                    </ul>
+                </div>
+            </div>
+    </div>
+</div>
+
+<div id="pc-body">
+    <div id="pc-body-inner">
+        <table id="server_table" class="table table-striped table-bordered nowrap wp-100 bd-lw-0" cellpadding="0" cellspacing="0">
+        </table>
+    </div>
+</div>
+
+<div id="pc-foot" class="wp-100 bd-t-solid bd-t-ddd bd-tw-1"></div>
+@section Scripts{
+    <script type="text/javascript">
+        var serverStateDic = new Object();
+        $(function () {
+            BodyScroll = false;
+            serverStateDic = JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(serverStateValues))');
+            InitDataTable({
+                TableEle: '#server_table',
+                "columnDefs": [
+                            {
+                                "title": '<input type="checkbox" class="cbx_all"/>', "targets": 0, "data": function (row, type, val, meta) {
+                                        return '<input type="checkbox" class="cbx_val" value="' + row.Id + '"/>';
+                                }, width: '20px', className: 'txt-center'
+                            },
+                            { "title": '编号', "targets": 1, "data": "Id", "width": '150px', "className": '' },
+                            { "title": '名称', "targets": 2, "data": "Name", "width": '150px', "className": '' },
+                            {
+                                "title": '状态', "targets": 3, "data": function (row, type, val, meta) {
+                                    return serverStateDic[row.State];
+                                }, "width": '80px', "className": 'txt-center'
+                            },
+                            { "title": '地址', "targets": 4, "data": "Host" },
+                            { "title": "操作", "targets": 5,"data":function(row,type,val,meta){
+                                var menuItems=new Array();
+                                menuItems.push('<li><a href="javascript:void(0)" class="btn_detail" sysno="_sysNo" username="_userName"><i class="glyphicon glyphicon-list-alt"></i> 详情</a></li>'.replace('_sysNo',row.Id).replace('_userName',row.Name));
+                                menuItems.push('<li><a href="javascript:void(0)" class="btn_edit" sysno="_sysNo" username="_userName"><i class="glyphicon glyphicon-edit"></i> 编辑</a></li>'.replace('_sysNo', row.Id).replace('_userName', row.Name));
+                                var menuString=menuItems.join('');
+                                return '<div class="btn-group"><button type="button" class="btn btn-blue dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">管理 <span class="caret"></span></button><ul class="dropdown-menu list-dropdown-menu w-62">'+menuString+'</ul></div>';
+                            },width:'62px',className:'txt-center' }
+                ]
+            });
+
+            SearchServerNode();
+
+            //搜索事件
+            $("#search_btn").click(function () {
+                SearchServerNode();
+            });
+
+            //创建服务节点
+            $("#create_btn").click(function () {
+                OpenEditServerNodePage('@Url.Action("EditServerNode","Task")', '添加服务节点');
+            });
+
+            //删除服务节点
+            $("body").on("click", ".btn_delete", function () {
+                var sysNo = $(this).attr("sysno");
+                DeleteServerNode(sysNo);
+            });
+
+            //删除选中
+            $("#deleteselect_btn").click(function () {
+                var checkedValues = GetDataTableCheckedValues('#server_table');
+                if (!checkedValues || checkedValues.length <= 0) {
+                    ErrorMsg("还没有选择要删除的信息");
+                    return;
+                }
+                var checkedValueString = checkedValues.join(",");
+                DeleteServerNode(checkedValueString);
+            });
+
+            //编辑
+            $("body").on("click", ".btn_edit", function () {
+                var sysNo = $.trim($(this).attr("sysno"));
+                if (sysNo == "") {
+                    return;
+                }
+                var editUrl = '@Url.Action("EditServerNode", "Task", new { Id="sys_no"})'.replace('sys_no', sysNo);
+                OpenEditServerNodePage(editUrl, '编辑服务节点');
+            });
+            //详情
+            $("body").on('click', ".btn_detail", function () {
+                var sysNo = $.trim($(this).attr("sysno"));
+                if (sysNo == "") {
+                    return;
+                }
+                var editUrl = '@Url.Action("ServerNodeDetail", "Task", new { Id="sys_no"})'.replace('sys_no', sysNo);
+                OpenEditServerNodePage(editUrl, '服务详情');
+            });
+        })
+
+        //搜索服务节点
+        function SearchServerNode() {
+            var data = {};
+            PageSearch({
+                url: '@Url.Action("SearchServerNode","Task")',
+                data: data,
+                listEle: '#server_table'
+            });
+        }
+
+        //打开服务节点编辑页面
+        function OpenEditServerNodePage(url, tit) {
+            if (!url || $.trim(url) == "") {
+                return;
+            }
+            window.top.OpenNewTabPage(url, tit);
+        }
+
+        //删除服务节点
+        function DeleteServerNode(sysnos) {
+            if (!sysnos || sysnos == "") {
+                return;
+            }
+            ConfirmMsg('确认删除服务节点吗?', function () {
+                $.post('@Url.Action("DeleteServerNode","Task")', { ids: sysnos }, function (res) {
+                    ResultMsg(res);
+                    if (res.Success) {
+                        SearchServerNode();
+                    }
+                });
+            });
+        };
+    </script>
+}

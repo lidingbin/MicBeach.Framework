@@ -1,0 +1,252 @@
+﻿
+@{
+    ViewBag.Title = "服务节点选择";
+}
+@using MicBeach.Util.Extension
+@using MicBeach.Util.Serialize
+@using MicBeach.CTask
+@{ 
+    var serverStateValues = ServerState.运行.GetType().GetEnumValueAndNames();
+}
+<div id="pc-body">
+    <div id="pc-body-inner">
+        <div class="form_tabgroup c_pagecon">
+            <ul class="nav nav-tabs c_head" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#s_list" role="tab" data-toggle="tab">服务节点</a>
+                </li>
+                <li role="presentation">
+                    <a href="#s_selected" role="tab" data-toggle="tab">已选节点</a>
+                </li>
+            </ul>
+            <div class="form_tabgconent tab-content dialog c_body">
+                <div role="tabpanel" class="tab-pane active c_pagecon" id="s_list">
+                    <div class="c_head panel panel-default mg-0 bd-w-0">
+                        <div class="panel-body pd-10">
+                            <div class="lis_search">
+                                <label class="stit">名称/地址</label><span class="sctrol"><input type="text" id="search_artino" name="search_serverkey" placeholder="" class="form-control" /></span><button class="btn btn-default mgl-5 fc_3" type="button" id="search_btn"><i class="glyphicon glyphicon-search"></i> 搜索</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="c_body">
+                        <table class="table table-striped table-bordered nowrap wp-100 bd-lw-0" id="server_table" cellpadding="0" cellspacing="0">
+                            @*<thead>
+                                <tr>
+                                    <th width="150px" class="b_l_none">编号</th>
+                                    <th width="150px">名称</th>
+                                    <th>地址</th>
+                                    <th width="60px" class="t_c">状态</th>
+                                    <th width="50px" class="t_c">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabe_page_list"></tbody>*@
+                        </table>
+                    </div>
+
+                    <div class="c_foot bd-t-solid bd-t-ddd bd-tw-1" id="tab_pager"></div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane c_pagecon" id="s_selected">
+
+                    <div class="c_head panel panel-default mg-0 bd-w-0">
+                        <div class="panel-body pd-10">
+                        </div>
+                    </div>
+
+                    <div class="c_body">
+                        <table class="table table-striped table-bordered nowrap wp-100 bd-lw-0" id="selected_server_table" cellpadding="0" cellspacing="0">
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="pc-foot">
+    <div class="txt-right form-submitbtn-con pdr-10"><button type="button" onclick="ConfirmSelect()" class="btn btn-blue">确定</button></div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        BodyScroll = false
+        HasDivPageCon = true;
+        PositionListTable = true;
+        var SelectData = new Object();
+        var selectObjects = new Array();
+        var ids = '';
+        var allDatas = new Object();
+        TabConentScroll = true;
+        var serverStateDic = new Object();
+        $(function () {
+            if (art.dialog.data("RemoveServerNodeIds")) {
+                ids = art.dialog.data("RemoveServerNodeIds");
+            }
+            serverStateDic = JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(serverStateValues))');
+            var columnConfigs = new Array();
+            var selectColumnConfigs = new Array();
+            for (var i = 0; i < 4; i++) {
+                var tit = '';
+                var data = '';
+                var width = '';
+                var className = '';
+                var render;
+                switch (i) {
+                    case 0:
+                        tit = "编号";
+                        data = "Id";
+                        width = "150px";
+                        break;
+                    case 1:
+                        tit = "名称";
+                        data = "Name";
+                        width = "150px";
+                        break;
+                    case 2:
+                        tit = "地址";
+                        data = "Host";
+                        break;
+                    case 3:
+                        tit = "状态";
+                        data = function (row, type, val, meta) {
+                            return serverStateDic[row.State];
+                        };
+                        width = "50px";
+                        className = 'txt-center';
+                        break;
+                }
+                var configItem = { "title": tit, "targets": i, "data": data, "width": width, "className": className, 'render': render };
+                columnConfigs.push(configItem);
+                selectColumnConfigs.push(configItem)
+            }
+            columnConfigs.push({
+                "title": "操作", "targets": 4, "data": function (row, type, val, meta) {
+                    return '<button type="button" data-value="' + row.Id + '" class="btn btn-xs btn-blue btn_select">选择</button>';
+                }, width: '40px', className: 'txt-center'
+            });
+            selectColumnConfigs.push({
+                "title": "操作", "targets": 4, "data": function (row, type, val, meta) {
+                    return '<button type="button" data-value="' + row.Id + '" class="btn btn-xs btn-danger btn_cancel">取消</button>';
+                }, width: '40px', className: 'txt-center'
+            });
+            InitDataTable({
+                TableEle: '#server_table',
+                "columnDefs": columnConfigs
+            });
+            InitDataTable({
+                TableEle: '#selected_server_table',
+                "columnDefs": selectColumnConfigs
+            });
+
+            Search();
+
+            //搜索事件
+            $("#search_btn").click(function () {
+                Search();
+            });
+
+            //选择数据
+            $("body").on("click", ".btn_select", function () {
+                var btn = $(this);
+                SelectValue(btn);
+            });
+
+            //取消选择
+            $("body").on("click", ".btn_cancel", function () {
+                var btn = $(this);
+                var sysNo = $.trim(btn.attr("data-value"));
+                DeleteSelectValue(sysNo);
+            });
+
+            //删除选择
+            $("body").on("click", ".btn_delete", function () {
+                var btn = $(this);
+                var sysNo = $.trim(btn.attr("data-value"));
+                DeleteSelectValue(sysNo);
+            });
+            LayoutCallbackEvent = InitSelect;
+        })
+
+        //搜索数据
+        function Search() {
+            var data = { excludeIds: ids };
+            PageSearch({
+                url: '@Url.Action("ServerNodeMultipleSelectSearch", "Task")',
+                data: data,
+                listEle:'#server_table',
+                pagerEle: "#tab_pager",
+                selectPage: true,
+                callback: InitSelect
+            });
+        }
+
+        //返回选中的数据
+        function ConfirmSelect() {
+            art.dialog.close(true);
+            art.dialog.opener.ServerNodeMultipleSelectCallback(selectObjects);
+        }
+
+        //选择数据
+        function SelectValue(btn) {
+            if (!btn || !allDatas) {
+                return;
+            }
+            var sysNo = $.trim(btn.attr("data-value"));
+            if (sysNo == "") {
+                return;
+            }
+            btn.removeClass("btn_select").removeClass("btn-blue").addClass("btn_cancel").addClass("btn-danger").html("取消");
+            if (!SelectData[sysNo]) {
+                var nowProObj = allDatas[sysNo];
+                if (!nowProObj) {
+                    return;
+                }
+                SelectData[sysNo] = true;
+                selectObjects.push(nowProObj);
+                AddDataTableData("#selected_server_table", [nowProObj]);
+            }
+        }
+
+        //删除选择
+        function DeleteSelectValue(sysNo) {
+            if (!sysNo || sysNo == "") {
+                return;
+            }
+            var selectTrEle = SelectData[sysNo];
+            if (!selectTrEle) {
+                return;
+            }
+            SelectData[sysNo] = false;
+            for (var d in selectObjects) {
+                if (selectObjects[d].Id == sysNo) {
+                    selectObjects.splice(d, 1);
+                    break;
+                }
+            }
+            var btn = $('.btn_cancel[data-value="' + sysNo + '"]');
+            if (btn.length > 0) {
+                btn.removeClass("btn_cancel").removeClass("btn-danger").addClass("btn_select").addClass("btn-blue").html("选择");
+            }
+            ReplaceDataTableData("#selected_server_table", selectObjects);
+        }
+
+        //初始化信息
+        function InitSelect(datas) {
+            if (datas) {
+                for (var p in datas) {
+                    var data = datas[p];
+                    allDatas[data.Id] = data;
+                }
+            }
+            if (!SelectData) {
+                return;
+            }
+            for (var sysNo in SelectData) {
+                if (!SelectData[sysNo]) {
+                    continue;
+                }
+                SelectValue($('.btn_select[data-value="' + sysNo + '"]').first());
+            }
+        }
+    </script>
+}
