@@ -1,6 +1,0 @@
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Util\MicBeach.Util\bin\Release\MicBeach.Util.dll
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Util\MicBeach.Util\bin\Release\MicBeach.Util.pdb
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Util\MicBeach.Util\obj\Release\MicBeach.Util.csprojResolveAssemblyReference.cache
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Util\MicBeach.Util\obj\Release\MicBeach.Util.csproj.CoreCompileInputs.cache
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Util\MicBeach.Util\obj\Release\MicBeach.Util.dll
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Util\MicBeach.Util\obj\Release\MicBeach.Util.pdb

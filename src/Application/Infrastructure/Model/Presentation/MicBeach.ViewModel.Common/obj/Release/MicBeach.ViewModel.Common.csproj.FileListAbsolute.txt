@@ -1,9 +1,0 @@
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Common\bin\Release\MicBeach.ViewModel.Common.dll
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Common\bin\Release\MicBeach.ViewModel.Common.pdb
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Common\bin\Release\Newtonsoft.Json.dll
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Common\bin\Release\Newtonsoft.Json.xml
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Common\obj\Release\MicBeach.ViewModel.Common.csprojResolveAssemblyReference.cache
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Common\obj\Release\MicBeach.ViewModel.Common.csproj.CoreCompileInputs.cache
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Common\obj\Release\MicBeach.ViewModel.Common.csproj.CopyComplete
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Common\obj\Release\MicBeach.ViewModel.Common.dll
-E:\SvnFile\Course\DDDFramework\Src\MicBeach.Framework\Application\Infrastructure\Model\Presentation\MicBeach.ViewModel.Common\obj\Release\MicBeach.ViewModel.Common.pdb
