@@ -4,4 +4,4 @@
 
 详细讲解：https://study.163.com/course/introduction/1005643030.htm?share=1&shareId=1142344671
 
-最新的代码已迁移到：https://github.com/lidingbin/MicBeach.Framework.Core
+最新的代码维护已迁移到：https://github.com/MicBeach
